@@ -1,0 +1,13 @@
+Subgraph enumeration is an important problem in graph theory with wide range of applications.
+Being NP-Complete, this problem needs efficient implementations and smart heuristics to be practical for large sized graphs and queries.
+The problem has huge scope for parallelism, there are many existing solutions in the multi-core and distributed computing community.
+Graphics Processing Units (GPUs) offer massive parallelism and solutions based on GPUs outperform the multi-core implementations.
+
+Most GPU solutions use Breadth First Traversal to utilize underlying parallelism and impose huge restrictions on hardware due to memory requirements.
+PARSEC (Parallel Subgraph Enumeration and Counter) is the first GPU based solution that uses depth first search and performs in memory subgraph enumeration.
+In this thesis PARSEC was improved with insights from traditional sequential solutions and smart GPU implementations.
+
+The performance of subgraph Enumeration is limited by number of intersection operations, a smart preprocessing technique was developed that detects scope for intersection reuse and reduces the number of intersections by up to $3.87\times$.
+A 2 phases pruning technique was developed which shrinks search space to further reduce the number of intersections by up to $6.6\times$
+An in depth analysis of PARSEC was conducted to discover severe load imbalance which limits performance, a hybrid parallelization scheme was developed that improves the load imbalance by a upto $14\times$.
+Altogether, these improvements provide a best geometric mean time speedup of $4.6\times$ across data graphs and $3.7\times$ across all queries.

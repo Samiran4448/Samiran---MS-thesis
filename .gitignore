@@ -1,0 +1,16 @@
+*.aux
+*.lof
+*.log
+*.lot
+*.gz
+*.toc
+*.pdf
+*.fls
+*.blg
+*.fdb_latexmk
+*.bbl
+*.pptx
+*.~pptx
+.vscode/**
+*.DS_Store
+*.bst

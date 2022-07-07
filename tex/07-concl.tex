@@ -1,0 +1,21 @@
+\chapter{Conclusions and Future Work}\label{chap:conclusions}
+
+In this thesis, brief review of subgraph enumeration algorithms using state space search techniques was performed.
+Insights from traditional sequential algorithms and understanding of GPU architecture were used to apply different improvements on the state-of-the-art subgraph enumeration application, PARSEC \cite{PARSEC_VD}.
+To reduce the number of intersections, the problem of detecting optimal reuse mappings was posed as an optimization problem and a closed form solution was found.
+The search space of the search tree was reduced by using a 2 phase hybrid symmetry breaking strategy which uses heuristics to dynamically decide the symmetry breaking direction.
+Further, an in depth analysis of PARSEC \cite{PARSEC_VD} was performed to point out the underlying load imbalance due to the parallelization scheme and static work split.
+The load balance was improved by using a hybrid parallelization scheme and splitting the kernel.
+These different techniques help achieve modest geometric mean speedups of up to $4\times$ across different data graphs and up to $3.7\times$ across all queries.
+These efforts also help develop numerous computational insights and unlocks scope for further improvement.
+
+For future work, the load balance can be improved by using dynamic strategies like work sharing between blocks.
+The biggest drawback of this implementation is that it is only applicable for queries with a central node.
+Different algorithms need to be developed for adding support to more queries, one idea may be converting edges in a query graphs to vertices to support queries with central edge and try adding dummy edges to queries to create an artificial central node.
+
+Another drawback of this implementation is the memory requirement being square of the undirected max degree. This inhibits the implementation to be truly scalable for large dense graphs.
+Orientation based techniques were tried which take the partially induced subgraph and find remaining candidates using binary search techniques. However, these implementations do not perform well with increasing query size and have even worse load imbalance.
+But they can still be used due to smaller memory footprint and being faster than traditional sequential algorithms.
+
+After fixing the load balance problems, the implementation can be scaled to multiple GPUs by using the CPU unified memory to store the data graph and process even bigger data graphs and larger queries in reasonable time.
+Graph partition packages like METIS \cite{metis} can be used to scale further by partitioning graphs and storing them to more than one CPU nodes.

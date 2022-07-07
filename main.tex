@@ -1,0 +1,225 @@
+\documentclass[draftthesis,tocnosub,noragright,centerchapter,12pt]{uiucecethesis09}
+
+% Use draftthesis for notes and date markings on every page.  Useful when you
+%   have multiple copies floating around.
+% Use offcenter for the extra .5 inch on the left side. Needed with fullpage and fancy.
+% Use mixcasechap for compatibility with hyperref package, which does NOT like all caps default
+% Use edeposit for the adviser/committee on the title page.
+% Use tocnosub to suppress subsection and lower entries in the TOC.
+% PhD candidates use "proquest" for the proquest abstract.
+
+\makeatletter
+
+
+%for colorwise comments
+\newcount\Comments  % 0 suppresses notes to selves in text
+\Comments=1   % TODO: set to 0 for final version
+\usepackage{color}
+\definecolor{darkgreen}{rgb}{0,0.5,0}
+\definecolor{purple}{rgb}{1,0,1}
+\definecolor{orange}{rgb}{1, 0.5, 0}
+
+\newcommand{\kibitz}[2]{\ifnum\Comments=1\textcolor{#1}{#2}\fi}
+
+\newcommand{\samiran}[1]{\kibitz{orange}{[SK: #1]}}
+\newcommand{\RN}[1]{\kibitz{red}{[RN: #1]}}
+\newcommand{\samhita}[1]{\kibitz{purple}{[SV: #1]}}
+\newcommand{\shreya}[1]{\kibitz{blue}{[SK: #1]}}
+\newcommand{\etal}{\textit{et al}. }
+
+\usepackage{ulem}
+
+\usepackage{setspace}
+\usepackage{epsfig}  % for figures
+%\usepackage{graphicx}  % another package that works for figures
+\usepackage{subfigure}  % for subfigures
+\usepackage{multirow}   % for tables
+\usepackage[linesnumbered,lined,ruled]{algorithm2e}
+\usepackage{amsmath}  % for math spacing
+\usepackage{amssymb}
+\usepackage{caption}  % for math spacing
+\usepackage{textcomp}   %for trademark symbol
+\usepackage{enumerate}
+%\usepackage{url}  % Hyphenation of URLs.
+\usepackage{lscape}  % Useful for wide tables or figures.
+\usepackage[justification=raggedright]{caption}	% makes captions ragged right - thanks to Bryce Lobdell
+\usepackage{amsthm}
+
+\newcommand{\source}[1]{\caption*{\raggedleft{Source: {#1}}} }
+\newtheorem{theorem}{Theorem}
+
+% *** SPECIALIZED LIST PACKAGES ***
+%
+
+\usepackage{algpseudocode}
+% algorithmic.sty was written by Peter Williams and Rogerio Brito.
+% This package provides an algorithmic environment fo describing algorithms.
+% You can use the algorithmic environment in-text or within a figure
+% environment to provide for a floating algorithm. Do NOT use the algorithm
+% floating environment provided by algorithm.sty (by the same authors) or
+% algorithm2e.sty (by Christophe Fiorio) as the IEEE does not use dedicated
+% algorithm float types and packages that provide these will not provide
+% correct IEEE style captions. The latest version and documentation of
+% algorithmic.sty can be obtained at:
+% http://www.ctan.org/pkg/algorithms
+% Also of interest may be the (relatively newer and more customizable)
+% algorithmicx.sty package by Szasz Janos:
+% http://www.ctan.org/pkg/algorithmicx
+\algrenewcommand\algorithmicrequire{\textbf{Input:}}
+\algrenewcommand\algorithmicensure{\textbf{Output:}}
+\newdimen{\algindent}
+\setlength\algindent{1.5em}
+\algnewcommand\LeftComment[2]{\Statex \hspace{#1\algindent}$\triangleright$ #2}
+
+
+
+% Uncomment the appropriate one of the following four lines:
+\msthesis
+%\phdthesis
+%\otherdoctorate[abbrev]{Title of Degree}
+%\othermasters[abbrev]{Title of Degree}
+
+\title{Enhancements in High Performance Subgraph Enumeration on Graphics Processors}
+% \title{GPU-Accelerated Subgraph Enumeration}
+\author{Samiran Kawtikwar}
+\department{Industrial and Systems Enterprise Engineering}
+\degreeyear{2022}
+
+% Advisor name is required for
+% - doctoral students for the ProQuest abstract
+% - master's students who do not have a master's committee
+\advisor{Professor Rakesh Nagi\\Professor Wen-mei Hwu}
+
+
+% Uncomment the \committee command for
+% - all doctoral students
+% - master's students who have a master's committee
+%\committee{Professor Firstname Lastname, Chair\\
+%        Professor Firstname Lastname} % etc.
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% COPYRIGHT
+%
+%\copyrightpage
+%\blankpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% TITLE
+%
+\maketitle
+
+%\raggedright
+\parindent 1em%
+
+\frontmatter
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% ABSTRACT
+%
+\begin{abstract}
+    % Put the abstract in a file called "abs.tex" and it'll be inputted here.
+    \input{tex/abs.tex}
+\end{abstract}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% DEDICATION
+%
+\begin{dedication}
+    % Whatever dedication you want.
+    To Aai, Baba and Tai for their unconditional love and support.
+\end{dedication}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% ACKNOWLEDGMENTS
+%
+% Put acknowledgments in a file called "ack.tex" and it'll be inputted here.
+\begin{acknowledgments}
+    \input{tex/ack}
+\end{acknowledgments}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% TABLE OF CONTENTS
+%
+\tableofcontents
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% LIST OF TABLES
+%
+% The List of Tables is not strictly necessary. Omitting the List of Tables will
+% simplify the thesis check and reduce the number of corrections.
+\listoftables
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% LIST OF FIGURES
+%
+% The List of Figures is not strictly necessary. Omitting the List of Figures will
+% simplify the thesis check and reduce the number of corrections.
+\listoffigures
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% LIST OF ABBREVIATIONS
+%
+% The List of Abbreviations is not strictly necessary.
+\chapter{LIST OF ABBREVIATIONS}
+\begin{symbollist*}
+    \item[BFS] Breadth First Search
+    \item[CPU] Central Processing Unit
+    \item[DFS] Depth First Search
+    \item[GPGPU] General Purpose Graphics Processing Unit
+    \item[GPU] Graphics Processing Unit
+    \item[CUDA] Compute Unified Device Architecture
+    \item[SIMD] Single Instruction Multi Data
+    \item[SM] Streaming Multiprocessor
+    \item[HPC] High Performance Computing
+    \item[FLOPS] Floating Point Operations Per Second
+\end{symbollist*}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% LIST OF SYMBOLS
+% 
+% \begin{symbollist}[0.7in]
+%     \item[$\tau$] Time taken to drink one cup of coffee.
+% \end{symbollist}
+%
+
+\mainmatter
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% INSERT REAL CONTENT HERE
+%
+
+\include{tex/01-intro.tex}	% for INTRODUCTION in "intro.tex"
+\include{tex/02-bkg.tex}
+\include{tex/03-lit.tex}
+\include{tex/04-theory.tex}
+\include{tex/05-Improvements-Results.tex}
+\include{tex/06-results.tex}
+\include{tex/07-concl.tex}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% APPENDIX
+%
+\appendix
+\include{tex/apx}
+
+\backmatter
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% BIBLIOGRAPHY
+%
+\bibliographystyle{IEEE_ECE}
+% Put references in BibTeX format in thesisrefs.bib.
+\bibliography{thesisrefs}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% AUTHOR'S BIOGRAPHY
+% As of 10/03/2011, Author's Biography or Vita no longer accepted by Grad College
+
+\end{document}
+\endinput

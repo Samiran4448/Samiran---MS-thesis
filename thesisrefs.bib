@@ -1,0 +1,631 @@
+%% IEEEexample.bib 
+%% V1.10 
+%% 2002/09/27
+%% Copyright (c) 2002 by Michael Shell
+%% mshell(at)ece.gatech.edu
+%% See support website below for current contact information.
+%% 
+%% NOTE: This text file uses MS Windows line feed conventions. When (human)
+%% reading this file on other platforms, you may have to use a text
+%% editor that can handle lines terminated by the MS Windows line feed
+%% characters (0x0D 0x0A).
+%% 
+%% This is an example BibTeX database for the official IEEEtran.bst
+%% BibTeX style file.
+%% 
+%% Some entries call strings that are defined in the IEEEabrv.bib file.
+%% Therefore, IEEEabrv.bib should be loaded prior to this file. 
+%% Usage: 
+%% 
+%% \bibliographystyle{./IEEEtran} % use IEEEtran.bst style
+%% \bibliography{./IEEEabrv,./IEEEexample}
+%% 
+%% 
+%% Support sites:
+%% http://www.ctan.org/tex-archive/macros/latex/contrib/supported/IEEEtran/ 
+%% and/or
+%% http://www.ieee.org
+%%**********************************************************************
+%% Legal Notice:
+%% This code is offered as-is without any warranty either expressed or
+%% implied; without even the implied warranty of MERCHANTABILITY or
+%% FITNESS FOR A PARTICULAR PURPOSE!
+%% User assumes all risk.
+%% In no event shall IEEE or any contributor to this code be liable for
+%% any damages or losses, including, but not limited to, incidental,
+%% consequential, or any other damages, resulting from the use or misuse
+%% of any information contained here.
+%%
+%% This code is distributed under the Perl Artistic License 
+%% ( http://language.perl.com/misc/Artistic.html ) 
+%% and may be freely used, distributed and modified - subject to the
+%% constraints therein.
+%% Retain all contribution notices, credits and disclaimers.
+%% 
+%% All comments are the opinions of their respective authors and are not
+%% necessarily endorsed by the IEEE.
+%%**********************************************************************
+
+
+% Note that, because the example references were taken from actual IEEE
+% publications, these examples do not always contain the full amount
+% of information that may be desirable (for use with other BibTeX styles).
+% In particular, full names (not abbreviated with initials) should be
+% entered whenever possible as some (non-IEEE) bibliography styles use
+% full names. IEEEtran.bst will automatically abbreviate when it
+
+% The three most common and typical types of references used in
+% IEEE publications:
+
+@article{Sutter-multi-core-programming,
+  author     = {Sutter, Herb and Larus, James},
+  title      = {Software and the Concurrency Revolution: Leveraging the Full Power of Multicore Processors Demands New Tools and New Thinking from the Software Industry.},
+  year       = {2005},
+  issue_date = {September 2005},
+  publisher  = {Association for Computing Machinery},
+  address    = {New York, NY, USA},
+  volume     = {3},
+  number     = {7},
+  issn       = {1542-7730},
+  url        = {https://doi.org/10.1145/1095408.1095421},
+  doi        = {10.1145/1095408.1095421},
+  abstract   = {Concurrency has long been touted as the "next big thing" and "the way of the future," but for the past 30 years, mainstream software development has been able to ignore it. Our parallel future has finally arrived: new machines will be parallel machines, and this will require major changes in the way we develop software. The introductory article in this issue describes the hardware imperatives behind this shift in computer architecture from uniprocessors to multicore processors, also known as CMPs.},
+  journal    = {Queue},
+  month      = {sep},
+  pages      = {54–62},
+  numpages   = {9}
+}
+
+@article{GPUs_and_gaming,
+  author  = {Tommaso Biagini and Francesco Petrizzelli and Mauro Truglio and Roberto Cespa and Alessandro Barbieri and Daniele Capocefalo and Stefano Castellana and Maria Florencia Tevy and Massimo Carella and Tommaso Mazza},
+  title   = {Are Gaming-Enabled Graphic Processing Unit Cards Convenient for Molecular Dynamics Simulation?},
+  journal = {Evolutionary Bioinformatics},
+  volume  = {15},
+  number  = {},
+  pages   = {1176934319850144},
+  year    = {2019},
+  doi     = {10.1177/1176934319850144},
+  note    = {PMID: 31205410},
+  url     = { 
+             https://doi.org/10.1177/1176934319850144
+             
+             },
+  eprint  = { 
+             https://doi.org/10.1177/1176934319850144
+             }
+}
+
+@article{quasi-clique-plagiarism,
+  author     = {Roberto Alonso and
+                Stephan G{\"{u}}nnemann},
+  title      = {Mining Contrasting Quasi-Clique Patterns},
+  journal    = {CoRR},
+  volume     = {abs/1810.01836},
+  year       = {2018},
+  url        = {http://arxiv.org/abs/1810.01836},
+  eprinttype = {arXiv},
+  eprint     = {1810.01836},
+  timestamp  = {Tue, 30 Oct 2018 00:00:00 +0100},
+  biburl     = {https://dblp.org/rec/journals/corr/abs-1810-01836.bib},
+  bibsource  = {dblp computer science bibliography, https://dblp.org}
+}
+
+@article{motif-counting-application,
+  author    = {Alon, Noga
+               and Dao, Phuong
+               and Hajirasouliha, Iman
+               and Hormozdiari, Fereydoun
+               and Sahinalp, S. Cenk},
+  title     = {Biomolecular network motif counting and discovery by color coding},
+  journal   = {Bioinformatics (Oxford, England)},
+  year      = {2008},
+  month     = {Jul},
+  day       = {01},
+  publisher = {Oxford University Press},
+  volume    = {24},
+  number    = {13},
+  pages     = {i241-i249},
+  keywords  = {*Algorithms; Color; Computer Simulation; *Models, Biological; Protein Interaction Mapping/*methods; Proteome/*metabolism; Signal Transduction/*physiology},
+  abstract  = {Protein-protein interaction (PPI) networks of many organisms share global topological features such as degree distribution, k-hop reachability, betweenness and closeness. Yet, some of these networks can differ significantly from the others in terms of local structures: e.g. the number of specific network motifs can vary significantly among PPI networks. Counting the number of network motifs provides a major challenge to compare biomolecular networks. Recently developed algorithms have been able to count the number of induced occurrences of subgraphs with k < or = 7 vertices. Yet no practical algorithm exists for counting non-induced occurrences, or counting subgraphs with k > or = 8 vertices. Counting non-induced occurrences of network motifs is not only challenging but also quite desirable as available PPI networks include several false interactions and miss many others. In this article, we show how to apply the 'color coding' technique for counting non-induced occurrences of subgraph topologies in the form of trees and bounded treewidth subgraphs. Our algorithm can count all occurrences of motif G' with k vertices in a network G with n vertices in time polynomial with n, provided k = O(log n). We use our algorithm to obtain 'treelet' distributions for k < or = 10 of available PPI networks of unicellular organisms (Saccharomyces cerevisiae Escherichia coli and Helicobacter Pyloris), which are all quite similar, and a multicellular organism (Caenorhabditis elegans) which is significantly different. Furthermore, the treelet distribution of the unicellular organisms are similar to that obtained by the 'duplication model' but are quite different from that of the 'preferential attachment model'. The treelet distribution is robust w.r.t. sparsification with bait/edge coverage of 70{\%} but differences can be observed when bait/edge coverage drops to 50{\%}.},
+  note      = {18586721[pmid]},
+  issn      = {1367-4811},
+  doi       = {10.1093/bioinformatics/btn163},
+  url       = {https://doi.org/10.1093/bioinformatics/btn163},
+  language  = {eng}
+}
+
+
+@inproceedings{large-graph-comparison-application,
+  title     = {Efficient graphlet kernels for large graph comparison},
+  author    = {Shervashidze, Nino and Vishwanathan, SVN and Petri, Tobias and Mehlhorn, Kurt and Borgwardt, Karsten},
+  booktitle = {Proceedings of the $12^{th}$ International Conference on Artificial Intelligence and Statistics},
+  pages     = {488--495},
+  year      = {2009},
+  editor    = {van Dyk, David and Welling, Max},
+  volume    = {5},
+  series    = {Proceedings of Machine Learning Research},
+  address   = {Hilton Clearwater Beach Resort, Clearwater Beach, Florida USA},
+  month     = {16--18 Apr},
+  publisher = {PMLR},
+  pdf       = {http://proceedings.mlr.press/v5/shervashidze09a/shervashidze09a.pdf},
+  url       = {https://proceedings.mlr.press/v5/shervashidze09a.html},
+  abstract  = {State-of-the-art  graph kernels do not scale to large graphs with hundreds of nodes and thousands of edges. In this article we propose to compare graphs by counting graphlets, i.e., subgraphs with $k$ nodes where $k \in \{ 3, 4, 5 \}$. Exhaustive enumeration of all graphlets being prohibitively expensive, we introduce two theoretically grounded speedup schemes, one based on sampling and the second one specifically designed for bounded degree graphs. In our experimental evaluation, our novel kernels allow us to efficiently compare large graphs that cannot be tackled by existing graph kernels.}
+}
+
+@article{bioinformatics-application,
+  author    = {Milenkovi{\'{c}}, Tijana
+               and Przulj, Natasa},
+  title     = {Uncovering biological network function via graphlet degree signatures},
+  journal   = {Cancer informatics},
+  year      = {2008},
+  edition   = {2008/04/14},
+  publisher = {Libertas Academica},
+  volume    = {6},
+  pages     = {257-273},
+  abstract  = {MOTIVATION: Proteins are essential macromolecules of life and thus understanding their function is of great importance. The number of functionally unclassified proteins is large even for simple and well studied organisms such as baker's yeast. Methods for determining protein function have shifted their focus from targeting specific proteins based solely on sequence homology to analyses of the entire proteome based on protein-protein interaction (PPI) networks. Since proteins interact to perform a certain function, analyzing structural properties of PPI networks may provide useful clues about the biological function of individual proteins, protein complexes they participate in, and even larger subcellular machines. RESULTS: We design a sensitive graph theoretic method for comparing local structures of node neighborhoods that demonstrates that in PPI networks, biological function of a node and its local network structure are closely related. The method summarizes a protein's local topology in a PPI network into the vector of graphlet degrees called the signature of the protein and computes the signature similarities between all protein pairs. We group topologically similar proteins under this measure in a PPI network and show that these protein groups belong to the same protein complexes, perform the same biological functions, are localized in the same subcellular compartments, and have the same tissue expressions. Moreover, we apply our technique on a proteome-scale network data and infer biological function of yet unclassified proteins demonstrating that our method can provide valuable guidelines for future experimental research such as disease protein prediction. AVAILABILITY: Data is available upon request.},
+  note      = {19259413[pmid]},
+  issn      = {1176-9351},
+  url       = {https://pubmed.ncbi.nlm.nih.gov/19259413},
+  language  = {eng}
+}
+
+@article{chemical-target-application,
+  author  = {Gutman, Ivan and Rücker, Christoph and Rücker‡, Gerta},
+  year    = {2001},
+  month   = {05},
+  pages   = {739-45},
+  title   = {On Walks in Molecular Graphs},
+  volume  = {41},
+  journal = {Journal of chemical information and computer sciences},
+  doi     = {10.1021/ci000149u}
+}
+
+@inproceedings{recommendation-network-application,
+  author    = {Leskovec, Jure and Singh, Ajit and Kleinberg, Jon},
+  title     = {Patterns of Influence in a Recommendation Network},
+  year      = {2006},
+  isbn      = {3540332065},
+  publisher = {Springer-Verlag},
+  address   = {Berlin, Heidelberg},
+  doi       = {10.1007/11731139_44},
+  abstract  = {Information cascades are phenomena in which individuals adopt a new action or idea due to influence by others. As such a process spreads through an underlying social network, it can result in widespread adoption overall. We consider information cascades in the context of recommendations, and in particular study the patterns of cascading recommendations that arise in large social networks. We investigate a large person-to-person recommendation network, consisting of four million people who made sixteen million recommendations on half a million products. Such a dataset allows us to pose a number of fundamental questions: What kinds of cascades arise frequently in real life? What features distinguish them? We enumerate and count cascade subgraphs on large directed graphs; as one component of this, we develop a novel efficient heuristic based on graph isomorphism testing that scales to large datasets. We discover novel patterns: the distribution of cascade sizes is approximately heavy-tailed; cascades tend to be shallow, but occasional large bursts of propagation can occur. The relative abundance of different cascade subgraphs suggests subtle properties of the underlying social network and recommendation process.},
+  booktitle = {Proceedings of the 10th Pacific-Asia Conference on Advances in Knowledge Discovery and Data Mining},
+  pages     = {380–389},
+  numpages  = {10},
+  location  = {Singapore},
+  series    = {PAKDD'06}
+}
+% a paper in a conference proceedings
+% "conference" can be used as an alias for "inproceedings"
+% From the June 2002 issue of "Journal of Microelectromechanical Systems",
+% page 205, reference #16.
+@inproceedings{ppw_gpu_vs_cpu,
+  author    = {Dong, Tingxing and Dobrev, Veselin and Kolev, Tzanio and Rieben, Robert and Tomov, Stanimire and Dongarra, Jack},
+  year      = {2014},
+  month     = {05},
+  pages     = {972-981},
+  title     = {A Step towards Energy Efficient Computing: Redesigning a Hydrodynamic Application on CPU-GPU},
+  isbn      = {978-1-4799-3800-1},
+  booktitle = {Proceedings of the International Parallel and Distributed Processing Symposium, IPDPS},
+  doi       = {10.1109/IPDPS.2014.103}
+}
+
+@book{Book:Complexity_Theory,
+  author    = {Ingo Wegener},
+  title     = {Complexity Theory - Exploring the Limits of Efficient Algorithms},
+  publisher = {Springer Berlin, Heidelberg},
+  year      = {2005}
+}
+
+@book{GPU_book_wen-mei,
+  author    = {Kirk, David B. and Hwu, Wen-mei W.},
+  booktitle = {Programming Massively Parallel Processors: A Hands-on Approach},
+  title     = {Programming Massively Parallel Processors: A Hands-on Approach},
+  year      = {2010},
+  isbn      = {0123814723},
+  publisher = {Morgan Kaufmann Publishers Inc.},
+  address   = {San Francisco, CA, USA},
+  edition   = {1st}
+}
+
+
+@article{ullman_sgm,
+  author     = {Ullmann, J. R.},
+  title      = {An Algorithm for Subgraph Isomorphism},
+  year       = {1976},
+  issue_date = {Jan. 1976},
+  publisher  = {Association for Computing Machinery},
+  address    = {New York, NY, USA},
+  volume     = {23},
+  number     = {1},
+  issn       = {0004-5411},
+  url        = {https://doi.org/10.1145/321921.321925},
+  doi        = {10.1145/321921.321925},
+  abstract   = {Subgraph isomorphism can be determined by means of a brute-force tree-search enumeration procedure. In this paper a new algorithm is introduced that attains efficiency by inferentially eliminating successor nodes in the tree search. To assess the time actually taken by the new algorithm, subgraph isomorphism, clique detection, graph isomorphism, and directed graph isomorphism experiments have been carried out with random and with various nonrandom graphs.A parallel asynchronous logic-in-memory implementation of a vital part of the algorithm is also described, although this hardware has not actually been built. The hardware implementation would allow very rapid determination of isomorphism.},
+  journal    = {J. ACM},
+  month      = {jan},
+  pages      = {31–42},
+  numpages   = {12}
+}
+
+@article{mohammad_K-clique,
+  title   = {Accelerating K-Clique Counting on {GPU}s},
+  author  = {Mohammad Almasri and Izzat El Hajj and Rakesh Nagi and Jinjun Xiong and Wen-mei Hwu},
+  journal = {arXiv preprint arXiv:2104.13209},
+  year    = {2021}
+}
+
+@article{PARSEC_VD,
+  author    = {Vibhor Dodeja and Mohammad Almasri and Rakesh Nagi and Jinjun E Xiong and Wen-mei Hwu},
+  title     = {PARSEC: PARallel Subgraph Enumeration in CUDA},
+  year      = {2022},
+  publisher = {IEEE International Parallel and Distributed Processing Symposium (IPDPS)},
+  journal   = {IEEE}
+}
+
+@inproceedings{symbreak,
+  title        = {Network motif discovery using subgraph enumeration and symmetry-breaking},
+  author       = {Grochow, Joshua A and Kellis, Manolis},
+  booktitle    = {Annual International Conference on Research in Computational Molecular Biology},
+  pages        = {92--106},
+  year         = {2007},
+  organization = {Springer}
+}
+
+@article{RPS-paper,
+  author  = {Guo, Wentian and Li, Yuchen and Tan, Lee},
+  year    = {2020},
+  month   = {11},
+  pages   = {1-1},
+  title   = {Exploiting Reuse for GPU Subgraph Enumeration},
+  volume  = {PP},
+  journal = {IEEE Transactions on Knowledge and Data Engineering},
+  doi     = {10.1109/TKDE.2020.3035564}
+}
+
+@article{nauty,
+  title     = {Practical graph isomorphism, {II}},
+  author    = {McKay, Brendan D and Piperno, Adolfo},
+  journal   = {Journal of Symbolic Computation},
+  volume    = {60},
+  pages     = {94--112},
+  year      = {2014},
+  publisher = {Elsevier}
+}
+
+@misc{snap,
+  title  = {{SNAP} Datasets: Stanford large network dataset collection},
+  author = {Leskovec, Jure and Krevl, Andrej},
+  year   = {2014}
+}
+
+@inproceedings{crawford-sb-np-hard,
+  author    = {Crawford, James and Ginsberg, Matt and Luks, Eugene and Roy, Amitabha},
+  year      = {1997},
+  month     = {03},
+  pages     = {},
+  title     = {Symmetry-Breaking Predicates for Search Problems},
+  booktitle = {KR}
+}
+
+
+@inbook{sb-CSP,
+  author    = {Zampelli, Stéphane and Deville, Yves and Dupont, Pierre},
+  publisher = {John Wiley \& Sons, Ltd},
+  isbn      = {9780470612309},
+  title     = {Symmetry Breaking in Subgraph Pattern Matching},
+  booktitle = {Trends in Constraint Programming},
+  chapter   = {10},
+  pages     = {203-218},
+  doi       = {https://doi.org/10.1002/9780470612309.ch10},
+  url       = {https://onlinelibrary.wiley.com/doi/abs/10.1002/9780470612309.ch10},
+  eprint    = {https://onlinelibrary.wiley.com/doi/pdf/10.1002/9780470612309.ch10},
+  year      = {2007},
+  keywords  = {constraint satisfaction problem, bijective function, equivalent subtrees, symmetric solutions, global variable},
+  abstract  = {Summary This chapter contains sections titled: Background and definitions Variable symmetries Value symmetries Experimental results Local value symmetries Conclusion References}
+}
+
+
+@online{business-quant,
+  author = {Business-Quant},
+  url    = {https://businessquant.com/nvidia-revenue-by-end-market},
+  title  = {Nvidia Revenue Breakdown by End-Market (2017-2022)},
+  year   = {2022}
+}
+
+@techreport{developer-blog,
+  author      = {Pradeep Gupta},
+  institution = {NVIDIA},
+  title       = {CUDA Refresher: The CUDA Programming Model},
+  url         = {https://developer.nvidia.com/blog/cuda-refresher-cuda-programming-model/},
+  year        = {2020}
+}
+
+@inproceedings{sgm-techniques,
+  abstract  = {We study the performance of eight representative VFory subgraph matching algorithms. Specifically, we put QuickSI, GraphQL, CFL, CECI, DP-iso, RI and VF2++ in a common framework to compare them on the following four aspects: (1) method of filtering candidate vertices in the data graph; (2) method of ordering query vertices; (3) method of enumerating partial results; and (4) other optimization techniques. Then, we compare the overall performance of these algorithms with Glasgow, an algorithm based on the constraint programming. Through experiments, we find that (1) the filtering method of GraphQL is competitive to that of the latest algorithms CFL, CECI and DP-iso in terms of pruning power; (2) the ordering methods in GraphQL and RI are usually the most effective; (3) the set intersection based local candidate computation in CECI and DP-iso performs the best in the enumeration; and (4) the failing sets pruning in DP-iso can significantly improve the performance when queries become large. Our source code is publicly available at https://github.com/RapidsAtHKUST/SubgraphMatching.},
+  author    = {Shixuan Sun and Qiong Luo},
+  doi       = {10.1145/3318464.3380581},
+  isbn      = {9781450367356},
+  issn      = {07308078},
+  booktitle = {Proceedings of the ACM SIGMOD International Conference on Management of Data},
+  keywords  = {comparison and analysis,graph,subgraph matching},
+  month     = {6},
+  pages     = {1083-1098},
+  publisher = {Association for Computing Machinery},
+  title     = {In-Memory Subgraph Matching: An In-depth Study},
+  year      = {2020}
+}
+
+@article{expl-based1,
+  title   = {Taming verification hardness: an efficient algorithm for testing subgraph isomorphism},
+  author  = {Haichuan Shang and Ying Zhang and Xuemin Lin and Jeffrey Xu Yu},
+  journal = {Proc. VLDB Endow.},
+  year    = {2008},
+  volume  = {1},
+  pages   = {364-375}
+}
+@article{expl-based2,
+  title   = {Exploiting Vertex Relationships in Speeding up Subgraph Isomorphism over Large Graphs},
+  author  = {Xuguang Ren and Junhu Wang},
+  journal = {Proc. VLDB Endow.},
+  year    = {2015},
+  volume  = {8},
+  pages   = {617-628}
+}
+
+@inproceedings{expl-based3,
+  author    = {Bi, Fei and Chang, Lijun and Lin, Xuemin and Qin, Lu and Zhang, Wenjie},
+  title     = {Efficient Subgraph Matching by Postponing Cartesian Products},
+  year      = {2016},
+  isbn      = {9781450335317},
+  publisher = {Association for Computing Machinery},
+  address   = {New York, NY, USA},
+  url       = {https://doi.org/10.1145/2882903.2915236},
+  doi       = {10.1145/2882903.2915236},
+  booktitle = {Proceedings of the 2016 International Conference on Management of Data},
+  pages     = {1199–1214},
+  numpages  = {16},
+  keywords  = {compact path index, core-forest-leaf decomposition, subgraph isomorphism, postpone cartesian products},
+  location  = {San Francisco, California, USA},
+  series    = {SIGMOD '16}
+}
+
+@article{expl-based4,
+  title   = {Efficient and scalable labeled subgraph matching using SGMatch},
+  author  = {Carlos R. Rivero and Hasan M. Jamil},
+  journal = {Knowledge and Information Systems},
+  year    = {2016},
+  volume  = {51},
+  pages   = {61-87}
+}
+
+
+
+@inproceedings{cp-based-sgm1,
+  author    = {Archibald, Blair
+               and Dunlop, Fraser
+               and Hoffmann, Ruth
+               and McCreesh, Ciaran
+               and Prosser, Patrick
+               and Trimble, James},
+  editor    = {Rousseau, Louis-Martin
+               and Stergiou, Kostas},
+  title     = {Sequential and Parallel Solution-Biased Search for Subgraph Algorithms},
+  booktitle = {Integration of Constraint Programming, Artificial Intelligence, and Operations Research},
+  year      = {2019},
+  publisher = {Springer International Publishing},
+  address   = {Cham},
+  pages     = {20--38},
+  isbn      = {978-3-030-19212-9}
+}
+
+
+
+@article{cp-based-sgm2,
+  title    = {AllDifferent-based filtering for subgraph isomorphism},
+  journal  = {Artificial Intelligence},
+  volume   = {174},
+  number   = {12},
+  pages    = {850-864},
+  year     = {2010},
+  issn     = {0004-3702},
+  doi      = {https://doi.org/10.1016/j.artint.2010.05.002},
+  url      = {https://www.sciencedirect.com/science/article/pii/S0004370210000718},
+  author   = {Christine Solnon},
+  keywords = {Subgraph isomorphism, Constraint programming, All different constraint},
+  abstract = {The subgraph isomorphism problem involves deciding if there exists a copy of a pattern graph in a target graph. This problem may be solved by a complete tree search combined with filtering techniques that aim at pruning branches that do not contain solutions. We introduce a new filtering algorithm based on local all different constraints. We show that this filtering is stronger than other existing filterings — i.e., it prunes more branches — and that it is also more efficient — i.e., it allows one to solve more instances quicker.}
+}
+@inproceedings{VF,
+  author    = {Foggia, Pasquale and Sansone, Carlo and Vento, Mario},
+  year      = {2001},
+  month     = {01},
+  pages     = {},
+  title     = {An Improved Algorithm for Matching Large Graphs},
+  booktitle = {Proc of the 3rd IAPR-TC-15 International Workshop on Graph-based Representation}
+}
+@article{VF2,
+  author  = {Cordella, L.P. and Foggia, P. and Sansone, C. and Vento, M.},
+  journal = {IEEE Transactions on Pattern Analysis and Machine Intelligence},
+  title   = {A (sub)graph isomorphism algorithm for matching large graphs},
+  year    = {2004},
+  volume  = {26},
+  number  = {10},
+  pages   = {1367-1372},
+  doi     = {10.1109/TPAMI.2004.75}
+}
+
+@article{VF3,
+  author  = {Carletti, Vincenzo and Foggia, Pasquale and Saggese, Alessia and Vento, Mario},
+  journal = {IEEE Transactions on Pattern Analysis and Machine Intelligence},
+  title   = {Challenging the Time Complexity of Exact Subgraph Isomorphism for Huge and Dense Graphs with VF3},
+  year    = {2018},
+  volume  = {40},
+  number  = {4},
+  pages   = {804-818},
+  doi     = {10.1109/TPAMI.2017.2696940}
+}
+
+@book{Turbo-iso,
+  abstract  = {Includes index.},
+  author    = {Association for Computing Machinery. Special Interest Group on Management of Data.},
+  isbn      = {9781450320375},
+  pages     = {1296},
+  publisher = {ACM},
+  title     = {Turbo-ISO},
+  year      = {2013}
+}
+
+@article{Boost-iso,
+  author     = {Ren, Xuguang and Wang, Junhu},
+  title      = {Exploiting Vertex Relationships in Speeding up Subgraph Isomorphism over Large Graphs},
+  year       = {2015},
+  issue_date = {January 2015},
+  publisher  = {VLDB Endowment},
+  volume     = {8},
+  number     = {5},
+  issn       = {2150-8097},
+  url        = {https://doi.org/10.14778/2735479.2735493},
+  doi        = {10.14778/2735479.2735493},
+  journal    = {Proc. VLDB Endow.},
+  month      = {jan},
+  pages      = {617–628},
+  numpages   = {12},
+  keywords   = {graph adaptation, BoostIso, subgraph isomorphism}
+}
+
+@inproceedings{psgl,
+  author    = {Shao, Yingxia and Cui, Bin and Chen, Lei and Ma, Lin and Yao, Junjie and Xu, Ning},
+  title     = {Parallel Subgraph Listing in a Large-Scale Graph},
+  year      = {2014},
+  isbn      = {9781450323765},
+  publisher = {Association for Computing Machinery},
+  address   = {New York, NY, USA},
+  url       = {https://doi.org/10.1145/2588555.2588557},
+  doi       = {10.1145/2588555.2588557},
+  booktitle = {Proceedings of the 2014 ACM SIGMOD International Conference on Management of Data},
+  pages     = {625–636},
+  numpages  = {12},
+  keywords  = {graph algorithm, subgraph listing, graph, graph enumeration},
+  location  = {Snowbird, Utah, USA},
+  series    = {SIGMOD '14}
+}
+
+@article{mapreduce,
+  author     = {Lai, Longbin and Qin, Lu and Lin, Xuemin and Chang, Lijun},
+  title      = {Scalable Subgraph Enumeration in MapReduce},
+  year       = {2015},
+  issue_date = {June 2015},
+  publisher  = {VLDB Endowment},
+  volume     = {8},
+  number     = {10},
+  issn       = {2150-8097},
+  url        = {https://doi.org/10.14778/2794367.2794368},
+  doi        = {10.14778/2794367.2794368},
+  journal    = {Proc. VLDB Endow.},
+  month      = {jun},
+  pages      = {974–985},
+  numpages   = {12}
+}
+@article{mapreduce-dist,
+  author     = {Lai, Longbin and Qin, Lu and Lin, Xuemin and Zhang, Ying and Chang, Lijun and Yang, Shiyu},
+  title      = {Scalable Distributed Subgraph Enumeration},
+  year       = {2016},
+  issue_date = {November 2016},
+  publisher  = {VLDB Endowment},
+  volume     = {10},
+  number     = {3},
+  issn       = {2150-8097},
+  url        = {https://doi.org/10.14778/3021924.3021937},
+  doi        = {10.14778/3021924.3021937},
+  journal    = {Proc. VLDB Endow.},
+  month      = {nov},
+  pages      = {217–228},
+  numpages   = {12}
+}
+
+@inproceedings{CECI,
+  author    = {Bhattarai, Bibek and Liu, Hang and Huang, H. Howie},
+  title     = {CECI: Compact Embedding Cluster Index for Scalable Subgraph Matching},
+  year      = {2019},
+  isbn      = {9781450356435},
+  publisher = {Association for Computing Machinery},
+  address   = {New York, NY, USA},
+  url       = {https://doi.org/10.1145/3299869.3300086},
+  doi       = {10.1145/3299869.3300086},
+  booktitle = {Proceedings of the 2019 International Conference on Management of Data},
+  pages     = {1447–1462},
+  numpages  = {16},
+  keywords  = {graph pattern matching, extreme cluster, subgraph matching, subgraph listing, ceci, subgraph isomorphism},
+  location  = {Amsterdam, Netherlands},
+  series    = {SIGMOD '19}
+}
+
+@inproceedings{LIGHT,
+  author    = {Sun, Shixuan and Che, Yulin and Wang, Lipeng and Luo, Qiong},
+  booktitle = {2019 IEEE 35th International Conference on Data Engineering (ICDE)},
+  title     = {Efficient Parallel Subgraph Enumeration on a Single Machine},
+  year      = {2019},
+  volume    = {},
+  number    = {},
+  pages     = {232-243},
+  doi       = {10.1109/ICDE.2019.00029}
+}
+
+@inproceedings{Dryadic,
+  author    = {Mawhirter, Daniel and Reinehr, Samuel and Han, Wei and Fields, Noah and Claver, Miles and Holmes, Connor and McClurg, Jedidiah and Liu, Tongping and Wu, Bo},
+  booktitle = {2021 30th International Conference on Parallel Architectures and Compilation Techniques (PACT)},
+  title     = {Dryadic: Flexible and Fast Graph Pattern Matching at Scale},
+  year      = {2021},
+  volume    = {},
+  number    = {},
+  pages     = {289-303},
+  doi       = {10.1109/PACT52795.2021.00028}
+}
+
+
+@inproceedings{GPSM,
+  author    = {Tran, Ha-Nguyen
+               and Kim, Jung-jae
+               and He, Bingsheng},
+  editor    = {Renz, Matthias
+               and Shahabi, Cyrus
+               and Zhou, Xiaofang
+               and Cheema, Muhammad Aamir},
+  title     = {Fast Subgraph Matching on Large Graphs using Graphics Processors},
+  booktitle = {Database Systems for Advanced Applications},
+  year      = {2015},
+  publisher = {Springer International Publishing},
+  address   = {Cham},
+  pages     = {299--315}
+}
+
+
+
+@inproceedings{PBE-paper,
+  author    = {Wentian Guo and Yuchen Li and Mo Sha and Bingsheng He and Xiaokui Xiao and Kian Lee Tan},
+  doi       = {10.1145/3318464.3389699},
+  isbn      = {9781450367356},
+  issn      = {07308078},
+  booktitle = {Proceedings of the ACM SIGMOD International Conference on Management of Data},
+  keywords  = {GPU,partitioned graph,subgraph enumeration},
+  month     = {6},
+  pages     = {1067-1082},
+  publisher = {Association for Computing Machinery},
+  title     = {GPU-Accelerated Subgraph Enumeration on Partitioned Graphs},
+  year      = {2020}
+}
+
+@online{cub,
+  title  = {CUB},
+  author = {Merril, Duane},
+  url    = {https://nvlabs.github.io/cub/index.html},
+  year   = 2016
+}
+
+@article{metis,
+  author = {Karypis, George and Kumar, Vipin},
+  year   = {1997},
+  month  = {01},
+  pages  = {},
+  title  = {METIS—A Software Package for Partitioning Unstructured Graphs, Partitioning Meshes and Computing Fill-Reducing Ordering of Sparse Matrices}
+}
