@@ -14,3 +14,6 @@
 .vscode/**
 *.DS_Store
 *.bst
+
+
+!main.pdf
