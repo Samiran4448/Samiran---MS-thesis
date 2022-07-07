@@ -18,9 +18,9 @@ Formally, given a query graph $G_q$ and data graph $G_d$, the objective is to fi
 Isomorphic graphs are of interest since they represent similarity between inherent topology of the graph.
 % most graph properties do not depend on labels of vertices. \RN{<-unclear sentencee.}
 % As graph data is mostly relational the similarity between inherent topology is captured by graph isomorphism. 
-More formally, graph isomorphism is a bijection between the vertex sets $V(G_1)$ and $V(G_2)$ $f: V(G_1) \rightarrow V(G_2) $ with the condition: \textit{any two vertices $u$ and $v$ of $G_1$ are adjacent in $G_1$ \textit{if and only if} $f(u)$ and $f(v)$ are adjacent in $G_2$}.
-Mathematically, for $G_1$ and $G_2$ to be isomorphic: $(u,v) \in E(G_1) \leftrightarrow (f(u),f(v)) \in E(G_2)$. In this work we focus on undirected query graphs and data graphs.
-Subgraph enumeration entails the subgraph isomorphism problem which is known to be NP-Complete \cite{Book:Complexity_Theory}.
+For graphs $G_1$ and $G_2$ graph isomorphism is a bijection between the vertex sets $\mathcal{V}(G_1)$ and $\mathcal{V}(G_2)$ $f: \mathcal{V}(G_1) \rightarrow \mathcal{V}(G_2) $ with the condition: \textit{any two vertices $u$ and $v$ of $G_1$ are adjacent in $G_1$ \textit{if and only if} $f(u)$ and $f(v)$ are adjacent in $G_2$}.
+Mathematically, for $G_1$ and $G_2$ to be isomorphic: $(u,v) \in \mathcal{E}(G_1) \leftrightarrow (f(u),f(v)) \in \mathcal{E}(G_2)$. Where $\mathcal{E}(.)$ represents the edge set of a graph. In this work we focus on undirected query graphs and data graphs.
+Subgraph enumeration entails the subgraph isomorphism problem which is known to be NP-complete \cite{Book:Complexity_Theory}.
 
 Subgraph Enumeration has wide range of applications.
 For example, it can be used for plagiarism detection \cite{quasi-clique-plagiarism}.
@@ -32,7 +32,7 @@ With the advent of \textit{Internet Of Things} (IOT) and \textit{Information Tec
 significant
 challenges for data scalability.
 Increasing interests in graph analytics and improvements to computational hardware over the last two decades, in particularly CPUs and GPUs have helped develop practical solutions to this computationally challenging problem.
-Though, the existing solutions don't scale with increasing template size due to issues like memory requirement, computational time and load balance resulting in poor scalability.
+Though, the existing solutions don't scale with increasing template size due to issues like memory requirement, computational time, and load imbalance.
 
 % My contribution
 This work is focused towards improving the existing state-of-the-art solution for subgraph enumeration: PARSEC, developed by \cite{PARSEC_VD}.
@@ -44,11 +44,14 @@ A series of enhancements were developed to improve its computational performance
     \item Hybrid parallelism for better load balance.
 \end{enumerate}
 %Rest of the chapters are 
-The remainder of this thesis is organized as follows.
+The remainder of this thesis is organized as follows:
 % Section summary
-Chapter \ref{chap:Background} provides an overview of Graphics Processing Units.
-%, this is followed by a brief 
-Chapter \ref{chap:lit} gives a Literature Review that describes related work and defines mathematical notation used throughout this thesis.
-Chapter \ref{chap:basic-theory} illustrates basic techniques used in the subgraph enumeration algorithm with a runnning example.
-Chapter \ref{chap:Improvements} describes aforementioned enhancements in detail and analyzes their individual performance improvement.
-Chapters \ref{chap:Results} to \ref{chap:conclusions} evaluates to combined improvement due to these enhancements and wrap up the thesis with concluding remarks and scope for further work.
+\begin{enumerate}[\indent {}]
+    \item Chapter \ref{chap:Background} provides an overview of Graphics Processing Units and graph storage formats.
+    \item Chapter \ref{chap:lit} gives a Literature Review that describes related work and defines mathematical notation used throughout this thesis.
+    \item Chapter \ref{chap:basic-theory} illustrates basic techniques used in the subgraph enumeration algorithm with a runnning example.
+    \item Chapter \ref{chap:Improvements} describes aforementioned enhancements in detail and analyzes their individual contribution to performance.
+    \item Lastly, Chapters \ref{chap:Results} - \ref{chap:conclusions} evaluate combined improvement due to these enhancements and wrap up the thesis with concluding remarks and scope for further work.
+\end{enumerate}
+
+

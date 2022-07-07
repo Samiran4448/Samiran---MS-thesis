@@ -10,7 +10,7 @@
 
 \makeatletter
 
-
+    
 %for colorwise comments
 \newcount\Comments  % 0 suppresses notes to selves in text
 \Comments=1   % TODO: set to 0 for final version
@@ -23,11 +23,11 @@
 
 \newcommand{\samiran}[1]{\kibitz{orange}{[SK: #1]}}
 \newcommand{\RN}[1]{\kibitz{red}{[RN: #1]}}
-\newcommand{\samhita}[1]{\kibitz{purple}{[SV: #1]}}
-\newcommand{\shreya}[1]{\kibitz{blue}{[SK: #1]}}
+\newcommand{\SV}[1]{\kibitz{purple}{[SV: #1]}}
+% \newcommand{\shreya}[1]{\kibitz{blue}{[SK: #1]}}
 \newcommand{\etal}{\textit{et al}. }
 
-\usepackage{ulem}
+\usepackage[normalem]{ulem} %to strike the words
 
 \usepackage{setspace}
 \usepackage{epsfig}  % for figures
@@ -40,7 +40,7 @@
 \usepackage{caption}  % for math spacing
 \usepackage{textcomp}   %for trademark symbol
 \usepackage{enumerate}
-%\usepackage{url}  % Hyphenation of URLs.
+\usepackage{url}  % Hyphenation of URLs.
 \usepackage{lscape}  % Useful for wide tables or figures.
 \usepackage[justification=raggedright]{caption}	% makes captions ragged right - thanks to Bryce Lobdell
 \usepackage{amsthm}

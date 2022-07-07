@@ -7,9 +7,9 @@
 In the world of computational hardware, microprocessors based on single processing cores (traditional CPUs) have driven rapid performance improvements in floating-point operations per second (FLOPS) for nearly 2 decades $(1985-2003)$.
 These microprocessors were capable of performing in the range of Giga-FLOPS $(10^9)$ on desktops and Tera-FLOPS $(10^{12})$ on data centers \cite{GPU_book_wen-mei}.
 This improvement drive flattened due to fundamental problems such as thermal stability, energy density, and quantum effects.
-Since then, all microprocessors have adapted architectures with multiple processing cores and thread virtualization to keep up with the improvements expected by the market. Naturally, it needed significant change in software to keep up with the reported performance and increasing computational requirements \cite{Sutter-multi-core-programming}.
+Since then, all microprocessors have adapted architecture with multiple processing cores and thread virtualization to keep up with the improvements expected by the market. Naturally, it needed significant change in software to keep up with the reported performance and increasing computational requirements \cite{Sutter-multi-core-programming}.
 
-High-Definition Graphics demand from the gaming industry was one of the biggest drivers for such high-performance hardware. The performance demanded here is throughput oriented, i.e., generating maximum frames per second while the computational requirement for each pixel is sufficiently low.
+High-Definition Graphics demand from the gaming industry was one of the biggest drivers for such high-performance hardware. The performance demanded here is throughput oriented i.e., generating maximum frames per second while the computational requirement for each pixel is sufficiently low.
 Some chip manufacturers like NVIDIA took a different approach of multi-thread hardware  to cater to these requirements \cite{GPUs_and_gaming}.
 The hardware designed with this philosophy had threads capable of performing simple computational tasks with relatively lower clock speed to give an overall performance in Tera-FLOPS range. On top of that, the hardware gave more performance per watt which made it possible to add to a desktop machine \cite{ppw_gpu_vs_cpu}.
 Modern GPUs have also proven to be fast and cost-effective for deep learning and image processing tasks contributing to many advances in fields like computer vision and artificial intelligence. A modern data center GPU, for example (NVIDIA A100), now has more than 100,000 concurrent threads. These threads execute in many simple pipelines to give around 10 times faster raw performance than state-of-the-art CPUs \cite{GPU_book_wen-mei}.
@@ -20,9 +20,9 @@ Modern GPUs have also proven to be fast and cost-effective for deep learning and
     \label{fig:Nvidia-revenue}
 \end{figure}
 
-Figure \ref{fig:Nvidia-revenue} shows that Nvidia GPU data center market has improved significantly in recent years to become almost equivalent to the already huge gaming industry.
+Figure \ref{fig:Nvidia-revenue} shows that NVIDIA GPU data center market has improved significantly in recent years to become almost equivalent to the already huge gaming industry.
 This has fueled the hardware and software development of current server-grade GPUs which has enabled huge computational potential for deep learning.
-While HPC hardware improves at such rapid pace, software solutions for graph theory problems still need to move from \textit{multi core} paradigm to \textit{multi thread}.
+While HPC hardware improves at such rapid pace, software solutions for graph theory problems still need to move from the \textit{multi core} paradigm to \textit{multi thread}.
 
 \subsection{Heterogeneous Programming Environment}
 \begin{figure}[ht]
@@ -65,7 +65,8 @@ A block is a chunk of threads while a grid is a chunk of blocks.
 Since threads are virtual they need to be optimally assigned hardware resources to perform tasks.
 Figure \ref{fig:Thread-Hierarchy} shows how these virtual entities are mapped to the hardware. As discussed a thread utilizes a \textit{cuda core} for performing computation. A block of threads resides on a \textit{Streaming Multiprocessor} (SM), which is a hardware block that consists of computational resources like \textit{cuda cores, memory controllers, tensor cores}, etc. Thread block resides on an SM for the entirety of its execution. Hence, multiple threads in a block can utilize the same core. Multiple blocks can reside on an SM simultaneously within limits.
 GPU has multiple SMs and hence many blocks can concurrently reside on the GPU during a context. If a grid requests more blocks than that can concurrently reside on the GPU, their execution is serialized.
-Nvidia's latest server-grade GPU A100 has 108 SMs with a maximum of 32 blocks or 2048 threads residing per SM which means the maximum number of concurrent threads is  221,184. While on the hardware side, A100 has 6912 \textit{cuda cores}, i.e., 64 cores per SM. So, during execution, all 2048 threads in a block will compete for these 64 cores.
+Nvidia's latest server-grade GPU A100 has 108 SMs with a maximum of 32 blocks or 2048 threads residing per SM which means the maximum number of concurrent threads is  221,184. While on the hardware side, A100 has 6912 \textit{cuda cores}, i.e., 64 cores per SM.
+% So, during execution, all 2048 threads in a block will compete for these 64 cores.
 
 To add further, the thread instructions are processed in a Single Instruction Multi Data (SIMD) model. This SIMD chunk of threads is allocated resources at once, this chunk is called \textit{warp}. If threads within a warp demand different operations then all threads within that warp perform all operations with output of undesired threads being ignored. This causes a slowdown in execution and is referred as \textit{warp divergence}. Hence, algorithms and implementations need to be designed in such a way that \textit{warp divergence} is minimized. While the size of thread block and grid are configurable by the programmer, warp size is a fixed architectural parameter.
 
@@ -89,7 +90,7 @@ Figure \ref{fig:Memory-Hierarchy} shows the memory hierarchy, as name suggests g
 Shared memory is accessible by all threads in a thread block.
 Register memory is private to each thread.
 The size limitations on these memory banks are based on SM architecture and hardware.
-Programmers are also equipped with read-only constant memory (not shown in the Figure) which is accessible by all threads.
+Programmers are also equipped with read-only constant memory (not shown in the Figure \ref{fig:Memory-Hierarchy}) which is accessible by all threads.
 Unknown to the programmer, compilers can also utilize these memory banks by caching in register and shared memory banks if repeated accesses to global memory are detected. It is referred as L1 cache. Equivalent to CPU cache there is also an L2 cache for use by the compiler only and accessible to all threads.
 
 As discussed, memory utilization plays a significant role in code performance, a program whose execution time is restricted by memory is called memory bound. Memory bound programs do not scale well with increasing number of devices as distributing computation to other workers does no benefit and further increases latency due to communication.
@@ -100,15 +101,15 @@ Some common techniques to reduce memory pressure are designing algorithms capabl
 \subsection{Block Scheduling}\label{sec:block-scheduling}
 As discussed in Section \ref{sec:thread-hierarchy} many blocks can concurrently reside on a GPU.
 
-Generally kernels are launched with grid sizes much higher than that can concurrently reside on a GPU, so the block execution needs to be serialized once maximum number of blocks that can occupy the GPU are scheduled. The blocks still waiting after initial allocation are allocated resources as they become available (i.e. a scheduled block terminates).
-This is done as blocks are non-preemptive. That is, ones allocated resources the block is never unallocated till completion.
-This scheduling provides scope clever memory utilization as memory need not be allocated for whole grid but only the blocks that can run concurrently. This concept of memory management is called persistent memory, knowing it can help reduce memory requirements.
+Generally kernels are launched with grid sizes much higher than that can concurrently reside on a GPU, so the block execution needs to be serialized once maximum number of blocks that can occupy the GPU are scheduled, the blocks waiting after initial allocation are allocated resources as they become available (i.e. a scheduled block terminates).
+This is done as blocks are non-preemptive. That is, ones allocated resources the block is never unallocated till its completion.
+This scheduling provides scope clever memory utilization as memory need not be allocated for whole grid but only the blocks that can run concurrently. This concept of memory management is called persistent memory, using it can help reduce memory requirements.
 
 Since blocks are preemptive, it is important to design the parallelism in such a way that all blocks have nearly similar amount of work.
 If not, blocks having higher amount of work should be scheduled earlier to reduce make span.
 In order to have better control over work allocation to a block, programmers often launch kernels with grid size equivalent to that can concurrently reside.
 These blocks then can choose from a common list of tasks in global memory, this approach is known as work stealing.
-Work stealing makes sure that work is allocated to a worker as soon is it is free.
+Work stealing makes sure that work is allocated to a worker as soon as it is free.
 
 
 
@@ -127,19 +128,20 @@ $$
 $$
 
 For most real world graphs, the underlying adjacency matrix is sparse. Hence, it is effective to be stored in sparse matrix formats.
-Computing community uses various sparse matrix formats such as \textit{ELLPack} (ELL), \textit{COOrdinate} (COO), \textit{Compressed Sparse Column} (CSC), \textit{Compressed Sparse Row} (CSR), \textit{Blocked Compressed Sparse Row} (BSR), etc.
+The computing community uses various sparse matrix formats such as \textit{ELL-Pack} (ELL), \textit{COOrdinate} (COO), \textit{Compressed Sparse Column} (CSC), \textit{Compressed Sparse Row} (CSR), \textit{Blocked Compressed Sparse Row} (BSR), etc.
 
 
 \begin{figure}[h]
-    \includegraphics[width=\textwidth]{fig/graph-storage.png}
+    \includegraphics[width=0.9\textwidth]{fig/graph-storage.png}
     \caption{Graph Storage Formats for graph in Fig.\ \ref{fig:sgm-intro}}
     \label{fig:graph-storage}
 \end{figure}
 
 We use a combination of CSR and COO formats in our implementation, it is referred as the CSRCOO (Column Sparse Row with COOrdinate) format.
 The CSRCOO format uses 3 arrays for storing information of the underlying graph.
-These arrays are \textit{Row Pointer} $|V|+1$, \textit{Row Index} $|E|$ and \textit{Column Index} $|E|$
+These arrays are \textit{Row Pointer} (length: $|V|+1$), \textit{Row Index} (length: $|E|$) and \textit{Column Index:} (length: $|E|$).
 % Here the first 3 arrays are same as the standard CSR and COO arrays, the $4^{th}$ array stores the column indices in a segment wise sorted fashion based on a given rule.
 % We use Degree and Degeneracy as 2 rules in this work.
 We maintain the \textit{Row Index} and \textit{Column Index} arrays sorted by their labels to enable binary search.
 Figure \ref{fig:graph-storage} shows comparison between different graph storage formats.
+% \samiran{Anything else that should be added?}

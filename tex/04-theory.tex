@@ -8,10 +8,9 @@ The Subgraph Enumeration algorithm can be decomposed into three major steps: (1)
     \label{fig:sgm-example}
 \end{figure}
 \section{Query Graph Preprocessing}\label{query-preprocessing}
-This section explains all processing done on the query graph to enable it for search tree traversal
-% \RN{the assumption is that somewhere previously you have explained that SE is performed using tree traversal; otherwise this appears to come out of nowhere}
-
-There are three main tasks performed on the input query: (1) Query sequencing, (2) Symmetry Detection, and (3) Reuse Analysis. Since the query graphs are very small (less than 10 nodes, in general) and all preprocessing tasks are polynomial time complexity, this preprocessing workload is handled by the CPU.
+This section explains all processing done on the query graph to enable it for search tree traversal.
+The main tasks performed on the input query are: Query sequencing and Symmetry Detection.
+Since the query graphs are very small (less than 10 nodes, in general) and all preprocessing tasks are polynomial time complexity, this preprocessing workload is handled by the CPU.
 Query preprocessing is important to shrink search tree exploration, the amount of work done at each node, and redundancy elimination.
 % \RN{too many details that the readethewould not know about...}
 % \samiran{Will try to introduce these in the literature review}.
@@ -20,7 +19,10 @@ Query preprocessing is important to shrink search tree exploration, the amount o
 The query graph input to the application is undirected. The first task is to convert this undirected graph to a directed acyclic graph (DAG). The ordering of the DAG governs the order in which these vertices are matched to the data graph.
 The query nodes are ordered based on their likelihood of matching with the data graph. Naturally, query nodes with lesser likelihood are prioritized over others.
 
-The query sequencing algorithm used by VF3 \cite{VF3} is utilized for this task. This algorithm uses multiple criteria to estimate the likelihood of matching and sequences the nodes in decreasing order of that likelihood. Interested readers are encouraged to read about these criteria in \cite{VF3}. Pseudocode for the algorithm used is listed in Algorithm \ref{algo:query-seq}.
+The query sequencing algorithm used by VF3 \cite{VF3} is utilized for this task. This algorithm uses multiple criteria to estimate the likelihood of matching and sequences the nodes in decreasing order of that likelihood.
+Interested readers are encouraged to read about these criteria in \cite{VF3}.
+The pseudocode is listed in Algorithm \ref{algo:query-seq}.
+The order generated after performing query sequencing on the example query graph is shown in Figure \ref{fig:query-sequencing}.
 
 \begin{algorithm}[h]
     \caption{Query Sequencing}
@@ -56,7 +58,7 @@ The query sequencing algorithm used by VF3 \cite{VF3} is utilized for this task.
     }
 \end{algorithm}
 
-The order generated after performing query sequencing on the example query graph is shown in Figure \ref{fig:query-sequencing}.
+
 
 \begin{figure}
     \includegraphics[width=\textwidth]{fig/LR/query-sequencing.png}
@@ -77,11 +79,11 @@ Figure \ref{fig:automorphism} shows the automorphism group of the query graph $G
     \label{fig:automorphism}
 \end{figure}
 
-The presence of symmetry essentially causes the same subgraph of the data graph to be counted multiple times and hence resulting in extra work and redundant counts.
+The presence of symmetry essentially causes the same subgraph of the data graph to be counted multiple times and hence resulting in extra work.
 The easiest technique that can be employed to avoid this is called symmetry breaking. This makes sure that the ties are resolved at the moment they are generated, hence avoiding redundant work.
 An easy way to break symmetry is by having an order between the matches of data graph between the symmetric levels, this was first
 % \RN{sure? how about previously} %
-used by \cite{symbreak}. Algorithm \ref{algo:symbrk} lists the pseudocode for detecting symmetry and generating ordering for symmetry based pruning. Note, the \textit{GetAutomorphismGroup} and \textit{GetOrbits} routines used here are provided by NAUTY \cite{nauty}.
+used by \cite{symbreak}. Algorithm \ref{algo:symbrk} lists the pseudocode for detecting symmetry and generating ordering for symmetry based pruning. Note, the \texttt{GetAutomorphismGroup} and \texttt{GetOrbits} routines used here are provided by NAUTY \cite{nauty}.
 % \RN{Where are the functions GetXYZ/}
 
 \begin{algorithm}
@@ -102,7 +104,7 @@ used by \cite{symbreak}. Algorithm \ref{algo:symbrk} lists the pseudocode for de
 
 
 For example, to avoid redundancy due to automorphism $\{q_1, q_4, q_3, q_2, q_5\}$ of $G_q$, it can be made sure that the data graph vertices matched at level 2 have labels less than the vertices matched at level 4. This is an example of \textit{lexicographic symmetry} breaking.
-Another symmetry breaking order can be the degree of data graph nodes themselves.
+Another symmetry breaking order can be based on the degree of data graph nodes.
 A key observation is that the symmetry breaking criteria can be different for different levels but not always different for different subtrees.
 This will be formally established and utilized in Section \ref{sec:hy-symbreak}.
 
@@ -150,15 +152,17 @@ This will be formally established and utilized in Section \ref{sec:hy-symbreak}.
 \section{Data Graph Preprocessing}\label{graph-preprocessing}
 
 Data graph preprocessing involves operations on the data graph to shrink the search tree during traversal.
-With GPU implementations, preprocessing also helps to improve coalesced memory accesses and saves on GPU memory.
+With GPU implementations, preprocessing also helps to improve coalesced memory accesses and memory utilization.
 
 
 \subsection{Peeling}\label{peeling}
 Subgraph Enumeration produces isomorphic matches of query graph in the data graph.
-Naturally, each match needs to have degree greater than the degree of the corresponding query node it is matched with.
+Naturally, each match needs to have degree greater than the degree of the corresponding query node.
 This implies that: \textit{Vertices in data graph with degree less than minimum query degree will never form any matches.}
-Using this simple observation, all the vertices with degree lesser than the minimum query degree are deleted from the data graph. This can be done iteratively as the lemma holds for the resulting data graph as well. This process is commonly called \textit{Peeling}.
-Empirical experiments performed by \cite{PARSEC_VD} show that, for best results, \textit{Peeling} should be performed till at most $5\%$ of nodes are deleted.
+Using this simple observation, all the vertices with degree lesser than the minimum query degree can be deleted from the data graph.
+This can also be done iteratively as the lemma holds for the resulting data graph.
+This process is commonly called \textit{Peeling}.
+Empirical experiments performed by \cite{PARSEC_VD} show that \textit{Peeling} should be performed till at most $5\%$ of nodes are deleted.
 Algorithm \ref{algo:peel} shows the pseudocode for the peeling routine.
 Note the filtering of vertices is done on GPU using the CUB library \cite{cub}.
 \begin{algorithm}[h]
@@ -192,7 +196,7 @@ To achieve this, we need another copy of the \textit{Column Index} array in a \t
 The \textit{priority} can be any property of the vertices; in our case we explore two properties: Degree and Degeneracy.
 \begin{figure}
     \includegraphics[width=\textwidth]{fig/LR/prio-sorting.png}
-    \caption{Generating Priority Sorted Column Index Array}
+    \caption{Generating Priority Sorted Column Index Array \samiran{Is this image alright?}}
     \label{fig:prio-sorting}
 \end{figure}
 Given the size of data graph we use GPUs for this preprocessing task.
@@ -202,7 +206,7 @@ An array of triplets is then created with each entry containing an element from 
 This array of triplets is subjected to two key based stable sorts, the first sort is with the keys being entries in the \textit{priority} array while second sort is with the keys being entries in the \textit{Row Index} array. Figure \ref{fig:prio-sorting} shows the priority sorting performed on $G_d$ as a series of key sorts.
 
 \subsection{Induced Subgraph}\label{encoding}
-The search space in the subgraph isomorphism problem is essentially the whole graph for a general query.
+The search space in subgraph enumeration problem is essentially the whole graph for a general query.
 This makes the problem extremely challenging to scale.
 However, most practical applications of subgraph isomorphism focus on dense templates.
 Similar to \cite{mohammad_K-clique}, we note that restricting the search space can provide immense performance improvements, especially on the GPUs due to enhanced memory utilization.
@@ -215,10 +219,10 @@ Similar to \cite{mohammad_K-clique}, we note that restricting the search space c
 
 The search space can be restricted by focusing on query graphs containing at least one \textit{Central node}.
 A central node is defined as a node in the template graph that is connected to all other nodes.
-Under the assumption of a central node, the search space for each match is limited to the subgraph induced by the data vertex matched to the central node.
+Under the assumption of a central node, the search space for each match is limited to the subgraph induced by the graph vertex matched to the central node.
 Figure \ref{fig:induced-subgraph} shows the subgraph induced by vertex $d_{12}$.
 To save storage space, the induced subgraph is stored in a binary adjacency matrix format.
-The binary format allows fast set intersection operations as well as efficient symmetry breaking.
+The binary format allows fast set intersection operations as well as efficient symmetry breaking \cite{mohammad_K-clique}.
 To use priority based symmetry breaking, the columns of the adjacency matrix are ordered with \textit{Priority Sorted Column Index} Array.
 
 \section{Search Tree Traversal}\label{DFS-T}
@@ -230,8 +234,6 @@ To use priority based symmetry breaking, the columns of the adjacency matrix are
 This section explains how the sequenced query graph $G_q$ and processed data graph $G_d$ are used to perform the search tree traversal for enumerating all matches.
 % Let, the directed acyclic query graph be ${G}_q = (V_q, E_q)$ and the processed data graph be $G_d=(V_d, E_d)$.
 % We will assume this transformation for the example given in Figure \ref{fig:sgm-example}, the post process query graph is shown in \ref{fig:query-sequencing} and data graph is shown in Figure \ref{fig:peeling}.\\
-
-Algorithm \ref{algo:DFS-traversal} describes the DFS based iterative search tree traversal process.
 
 \begin{algorithm}
     \caption{DFS Traversal}
@@ -287,12 +289,13 @@ Algorithm \ref{algo:DFS-traversal} describes the DFS based iterative search tree
     }
 \end{algorithm}
 
+Algorithm \ref{algo:DFS-traversal} describes the DFS based iterative search tree traversal process.
 The whole traversal can work within a DFS stack of size $|V_q|\times Degree_{max}(G_d)$.
 At each node of the search tree, \textit{GetNextNodes} function is called which generates the candidates to be visited in the next level.
 This function is described in Algorithm \ref{algo:intersect}.
 It performs an adjacency list intersection operation to generate all possible candidates for the next level (lines 2 - 5).
 Since, there might be redundant candidates generated due to the symmetry of the query, some of them need to be pruned. This is done by the next loop (lines 6 - 8).
-Note that the set $\mathcal{V}_{orient}$ is available without overheads due to the column order of the induced subgraphs.
+Note that the set $\mathcal{V}_{orient}$ is available without overheads due to column order of the induced subgraph.
 
 \begin{algorithm}
     \caption{Generate Candidates for Next Level}
@@ -340,7 +343,7 @@ Note, the pseudocode in Algorithm \ref{algo:DFS-traversal} describes a DFS-based
               \label{fig:sgm-step3}
           \end{figure}
           For subtree rooted at $d_{12}$, there will be 4 candidates: $\{d_1, d_2, d_8, d_{10}\}$ and none can be pruned.
-    \item Level 3 candidates are obtained by the intersection of matches at level 2 and level 1. Since this level is symmetric to level 2 symmetry breaking needs to be performed. We use the decreasing degree criteria for symmetry breaking in this example. This can be performed without any overheads since the nodes are stored in desired priority order in \textit{PSCI}.
+    \item Level 3 candidates are obtained by the intersection of matches at level 2 and level 1. Since this level is symmetric to level 2 symmetry breaking needs to be performed. We use the decreasing degree criteria for symmetry breaking in this example.
           \begin{figure}
               \includegraphics[width=\textwidth]{fig/LR/sgm-step4.png}
               \caption{Step 3}
@@ -367,7 +370,7 @@ This way the search tree traversal process terminates with final matches
 $\{d_1, d_9, d_8, d_{12}, d_2\}$ and $\{d_1, d_9, d_8, d_{12}, d_{10}\}$.
 There might be more matches originating from subtrees rooted at $\{d_8, d_9\}$ which were not illustrated here.
 
-To conclude, this chapter gives a detailed understanding of all techniques involved in subgraph enumeration. As we can see, all subtrees are independent of each other hence, they can be trivially parallelized on GPUs by allocating a block to each of these subtrees.
+To conclude, this chapter gives a detailed understanding of all techniques involved in subgraph enumeration. As we can see, all subtrees are independent of each other hence, they can be easily parallelized on GPUs.
 
 One more subtle observation to be made here is that the exploration is dependent on the symmetry breaking technique.
 We can see from Figure \ref{fig:sgm-step4} that there would have been many more candidates at level 4 if the symmetry breaking was done using lexicographic criteria or increasing degree criteria.

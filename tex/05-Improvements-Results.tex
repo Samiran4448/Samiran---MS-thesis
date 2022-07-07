@@ -1,7 +1,8 @@
 \chapter{Improvements}{\label{chap:Improvements}
-Multiple ideas were applied to improve the performance of baseline, PARSEC \cite{PARSEC_VD}, this section lists each idea and its individual impact on performance.
-All improvements are then combined to present final improvement results in Chapter \ref{chap:Results}.
-The basic philosophy is to find the most time-consuming step and try to make it faster using algorithmic or computational techniques.
+Multiple ideas were applied to improve the performance of baseline, PARSEC \cite{PARSEC_VD}.
+This chapter lists each idea and its individual impact on performance.
+All improvements are then combined to present final results in Chapter \ref{chap:Results}.
+The basic philosophy used is to find the most time-consuming step and try to make it faster using algorithmic or computational techniques.
 
 The criteria used for quantifying the contributions of these improvements are number of intersections and runtime.
 These numbers are reported as speedups, the ratio of old to new.
@@ -23,7 +24,7 @@ This was also verified for the baseline \cite{PARSEC_VD}. Figure \ref{fig:time-d
     \label{fig:time-dist}
 \end{figure}
 This algorithm involves iterating over each element of the backward element list to perform intersection and generate possible candidates for next level (lines 2 - 5).
-The number of backward neighbors at each level increases with increasing template size. This results in even more adjacency list intersections at each level.
+The number of backward neighbors at each level increases with increasing template size. This results in even more adjacency list intersections at each node.
 RPS \cite{RPS-paper} reduces these operations by generating an intersection reuse plan, this plan smartly finds the intersections that will be required by more than one node and stores them when first calculated. There is a lot of intersection reuse possible with RPS as they employ a BFS strategy.
 Similar extent of reuse is not possible in DFS traversal since the past information is lost while backtracking.
 However, Some levels of the sequenced query graphs have similar backward neighbor lists. For such queries, the majority of intersections can be reused by simply storing the intermediate intersection results.
@@ -31,7 +32,7 @@ To do this efficiently, one needs to match levels with similar adjacency lists. 
 
 Let, the sequenced query graph be $G_q=(V_q, E_q)$ with $|V_q|=k$ and the vertex sequence $S_q$.
 $\mathcal{N}(.)$ be the function for getting the backward neighbor list of a vertex.
-For each pair of vertices at level $i$ and $j$ let $W_{ij}$ be a measure of the commonality between their backward neighbors' lists. Let $X_{i,j}$ be the decision variable which tells if vertex $i$ should reuse intersections from vertex $j$.
+For each pair of vertices at level $i$ and $j$ let $W_{ij}$ be a measure of the commonality between their backward neighbors'. Let $X_{i,j}$ be the decision variable which tells if vertex $i$ should reuse intersections from vertex $j$.
 
 With these definitions the optimization problem can be modelled as:
 \begin{align}
@@ -45,8 +46,8 @@ Where, $$
         0   \qquad \text{Otherwise}
     \end{cases}
 $$
-This problem is a linear semi-assignment problem (LSAP) with the greedy solution being optimal.
-This is easy to establish as any other solution can be improved by switching to the greedy solution.
+This problem is a linear semi-assignment problem (LSAP) where the greedy solution is optimal.
+% This is easy to establish as any other solution can be improved by switching to the ÷greedy solution.
 The solution to this problem is:
 $$
     X_{ij}=\begin{cases}
@@ -55,7 +56,7 @@ $$
     \end{cases}
 $$
 Reuse detection involves a find minimum operation for each level in $G_q$ hence it is polynomial time and can be performed on CPU for small-sized query graphs.
-The mappings found $x_{ij = 1}$ implies that level $i$ can use intersection results from level $j$.
+The mappings found $x_{ij} = 1$ implies that level $i$ can use intersection results from level $j$.
 Hence, the level $j$ is flagged as \textit{reusable} and its results are stored along with the DFS stack.
 Algorithm \ref{algo:reuse} lists the reuse detection and post-processing recipe.
 To save on constant memory the query graphs are stored in CSR format.
@@ -64,7 +65,7 @@ The modification step involves reordering the lists and generating the reuse poi
 
 We show reuse detection at work on the example query in Figure \ref{fig:sgm-example}.
 Here, only $w_{54}$ and $w_{53}$ are positive with value 2. Hence, any of the levels 3 or 4 can be marked reusable, Let's assume level 4.
-The backward neighbors of level four are $\{1,3\}$ and for level five they are $\{1,2,3\}$. To avoid checks in the for loop of Algorithm \ref{algo:intersect} line (2).
+The backward neighbors of level four are $\{1,3\}$ and for level five they are $\{1,2,3\}$. To avoid checks in the for loop of Algorithm \ref{algo:intersect} (line 2).
 Another Reuse pointer array is created which gives the start of the remaining neighbors of level 5.
 
 \begin{figure}
@@ -381,7 +382,7 @@ Figure \ref{fig:hybrid-par-speedups} shows the improvement in runtimes for the c
 
 \begin{figure}
     \includegraphics[width=\textwidth]{fig/improvements/Hybrid-parallelism-speedups.png}
-    \caption{Run times with Hybrid parallelism for com-youtube with cutoff=2048 }
+    \caption{Run times with Hybrid parallelism for com-youtube}
     \label{fig:hybrid-par-speedups}
 \end{figure}
 

@@ -11,7 +11,7 @@ These efforts also help develop numerous computational insights and unlocks scop
 
 For future work, the load balance can be improved by using dynamic strategies like work sharing between blocks.
 The biggest drawback of this implementation is that it is only applicable for queries with a central node.
-Different algorithms need to be developed for adding support to more queries, one idea may be converting edges in a query graphs to vertices to support queries with central edge and try adding dummy edges to queries to create an artificial central node.
+Different algorithms need to be developed for adding support to more queries, one idea may be converting edges in a query graphs to vertices to support queries with central edge and try adding dummy edges to queries to create an artificial central node. \samiran{Do these sound a bit vague?}
 
 Another drawback of this implementation is the memory requirement being square of the undirected max degree. This inhibits the implementation to be truly scalable for large dense graphs.
 Orientation based techniques were tried which take the partially induced subgraph and find remaining candidates using binary search techniques. However, these implementations do not perform well with increasing query size and have even worse load imbalance.
@@ -19,3 +19,5 @@ But they can still be used due to smaller memory footprint and being faster than
 
 After fixing the load balance problems, the implementation can be scaled to multiple GPUs by using the CPU unified memory to store the data graph and process even bigger data graphs and larger queries in reasonable time.
 Graph partition packages like METIS \cite{metis} can be used to scale further by partitioning graphs and storing them to more than one CPU nodes.
+
+\samiran{Any more ideas?}
