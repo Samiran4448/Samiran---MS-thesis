@@ -15,5 +15,6 @@
 *.DS_Store
 *.bst
 *.out
+*.synctex
 
 !main.pdf

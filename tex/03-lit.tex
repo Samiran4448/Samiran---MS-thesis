@@ -1,7 +1,7 @@
 \chapter{Literature Review}\label{chap:lit}
 
-This chapter describes relevant work in the area of subgraph enumeration in sequential (CPU) and parallel computing (multi-core/ GPU) communities.
-First, some definitions and notation are set to develop formal understanding.
+This chapter describes relevant work in the area of subgraph enumeration in sequential (CPU) and parallel computing (multi-core/GPU) communities.
+First, some definitions and notation are established to develop formal understanding.
 
 \section{Notation and Definitions}
 A graph is a pair of sets $G=(V,E)$, where $V$ is a set of elements called vertices and $E$ is a set of vertex pairs whose elements are called edges.
@@ -10,79 +10,82 @@ $u, v$ are called the endpoints of the edge.
 Edges of the graph can be directed or undirected.
 Undirected edges imply \{$(u,v)\in E \Leftrightarrow (v,u) \in E \quad \forall ~ u, v \in V$\}.
 An edge $e = (x,y)$ is incident to a vertex $v$ if $x=v$ or $y=v$.
-For the scope of this work, all graphs have undirected edges unless specifically mentioned.
+In this work, all graphs have undirected edges unless specifically mentioned.
 Graphs with directed Edge set are called directed graphs.
 $\mathcal{V}(G)$  and $\mathcal{E}(G)$ denote the vertex and edge set of graph $G$, respectively.
 
-Neighbor set of a vertex $v$, denoted by $\mathcal{N}(v)$ is a set of all vertices $u$ such that $\{u \in \mathcal{N}(v) \Leftrightarrow (u,v) \in E$\}.
-In case of directed graph the neighbors are further categorized as \textit{forward/outgoing} neighbors and \textit{backward/incoming} neighbors based on the direction of the incident edge.
-Degree of a vertex $v$, denoted by $d(v)$ or $degree(v)$ is the cardinality of its neighbor set. i.e. $d(v)=|\mathcal{N}(v)|$.
+Neighbor set of a vertex $v$, denoted by $\mathcal{N}(v)$, is a set of all vertices $u$ such that $\{u \in \mathcal{N}(v) \Leftrightarrow (u,v) \in E$\}.
+In case of a directed graph the neighbors are further categorized as \textit{forward/outgoing} neighbors and \textit{backward/incoming} neighbors based on the direction of the incident edge.
+Degree of a vertex $v$, denoted by $d(v)$ or $degree(v)$ is the cardinality of its neighbor set, i.e., $d(v)=|\mathcal{N}(v)|$.
 Maximum degree of a graph is the maximum of all degrees from its vertex set.
 Oriented graph is a transformation of an undirected graph $G$ to a directed graph $\tilde{G}$ such that: $$\{\forall~ (u,v) ~\& ~ (v,u) \in \mathcal{E}(G), \text{ either } (u,v) \text{ or } (v,u) \in \mathcal{E}(\tilde{G})\}$$
 
 
-A subgraph $g$ of a graph $G$, denoted by $g \subseteq G$ is a graph $g=(V_g, E_g)$ such that $V_g \subseteq V$ and $E_g \subseteq E$ where, $\forall~ (u_g, v_g) \in E_g \Rightarrow \{u_g, v_g\} \in V_g$.
-Induced subgraph by a vertex $v'$ in graph $G$, denoted by $G(v')$ is a subgraph $g=(V', E')$ of $G$ such that $V'=\mathcal{N}(v')\cup \{v'\}$ and $\{(x,y) \in E'\Leftrightarrow \{x,y\} \in V'\}$.
+A subgraph $g$ of a graph $G$, denoted by $g \subseteq G$ is a graph $g=(V_g, E_g)$ such that $V_g \subseteq V$ and $E_g \subseteq E$ where, $\forall~ (u_g, v_g) \in E_g \Rightarrow u_g, v_g \in V_g$.
+Induced subgraph by a vertex $v'$ in graph $G$, denoted by $G(v')$ is a subgraph $g=(V', E')$ of $G$ such that $V'=\mathcal{N}(v')\cup \{v'\}$ and $\{(x,y) \in E'\Leftrightarrow {x,y} \in V'\}$.
 
 For the rest of this thesis, the data graph is denoted by $G_d$ and the query graph is denoted by $G_q$. $V_d =  \mathcal{V}(G_d), V_q = \mathcal{V}(G_q)$.
-As introduced, the subgraph enumeration problem is to find all instances of $G_q$ that are isomorphic to $G_d$.
+As introduced previously, the subgraph enumeration problem is to find all instances of $G_q$ that are isomorphic to $G_d$.
 Isomorphism is a bijection $f$ between vertex set of two graphs, here $G_q$ and $g \subseteq G_d$, such that $ (u,v) \in \mathcal{E}(G_q) \Leftrightarrow (f(u), f(v)) \in \mathcal{E}(g)$.
 
-As we will see in Section \ref{sec:LIT-r}, the traversal based algorithms for subgraph matching consist routines for converting a given query graph to a directed graph and matching each vertex in the query graph to suitable vertices in the data graph. Whenever there are more than one matches, each of them has to be separately considered which creates branches and constructs a tree which is called the \textit{search tree}.
-The order in which the data graph vertices are matched with the query graph is called \textit{match order}. Formally, given $G_q$ the match order $\pi$ is the permutation of vertices $V_q$ which reflects the order in which they will be matched.
+As we will see in Section \ref{sec:LIT-r}, the traversal based algorithms for subgraph matching consist of routines for converting a given query graph to a directed graph and matching each vertex in the query graph to suitable vertices in the data graph. Whenever there is more than one match, each has to be considered independently.
+This creates branches and constructs a tree which is called the \textit{search tree}.
+The order in which the data graph vertices are matched with the query graph is called the \textit{match order}.
+Formally, given $G_q$, the match order $\pi$ is the permutation of vertices $V_q$ which reflects the order in which they will be matched.
 
 \section{Related Work} \label{sec:LIT-r}
 The underlying routine of subgraph enumeration is graph isomorphism.
-The first algorithm for detecting graph isomorphism was given by Ullman J. R. \cite{ullman_sgm}, here an isomorphic subgraph was found using a brute force search tree traversal with elimination of successor nodes.
-The traversal used here was DFS with each instance being represented as a binary table of $|V_q|\times |V_d|$ entries.
+The first algorithm for detecting graph isomorphism was given by Ullman \cite{ullman_sgm}. In this algorithm, an isomorphic subgraph was found using a brute force search tree traversal with elimination of successor nodes.
+The traversal used was DFS with each instance being represented as a binary table of $|V_q|\times |V_d|$ entries.
 For finding all instances, a DFS is recursively performed on all possible candidates with some of them pruned in advance.
-These search tree based algorithms are sometimes also referred as \textit{state space search} algorithms.
+These search tree based algorithms are sometimes also referred to as \textit{state space search} algorithms.
 
 Some other promising techniques which perform traversal to find query instances are exploration \cite{expl-based1}, \cite{expl-based2}, \cite{expl-based3}, \cite{expl-based4} and constraint programming \cite{cp-based-sgm1}, \cite{cp-based-sgm2} based.
-Approaches which do not perform traversal are based on converting query instances to a multi-way join framework where the edges represent relations in $Gq$ and evaluate the multi-way join to find all results \cite{mapreduce}, \cite{mapreduce-dist}.
-However, these techniques perform better for labelled subgraph enumeration \cite{sgm-techniques} and hence will be ignored in this review.
+Approaches which do not perform traversal are based on converting query instances to a multi-way join framework where the edges represent relations in $G_q$ and evaluate the multi-way join to find all results \cite{mapreduce}, \cite{mapreduce-dist}.
+However, these techniques perform better for labeled subgraph enumeration \cite{sgm-techniques} and hence will be ignored in this review.
 
-The algorithm from Ullman \cite{ullman_sgm} formed a basis for various traversal based algorithms, improvements came from different pruning heuristics and better match ordering. These algorithms are explained in Section \ref{sec:lit-seq}.
+The algorithm of Ullman \cite{ullman_sgm} formed the basis for various subsequent traversal based algorithms. Improvements came from different pruning heuristics and better match ordering. These algorithms are explained in Section \ref{sec:lit-seq}.
 Most sequential algorithms perform state space search process at each root node.
-With advancements in multi-core processors and cloud computing servers, multiple scalable algorithms were developed which are mentioned in Section \ref{sec:lit-par}.
-Most recently, the focus has shifted to GPUs because of increasing memory capacity and their advent in compute servers, these contributions are mentioned in Section \ref{sec:lit-gpu}.
+With advancements in multi-core processors and cloud computing servers, multiple scalable algorithms were developed, which are mentioned in Section \ref{sec:lit-par}.
+Most recently, the focus has shifted to GPUs because of increasing memory capacity and their advent in compute servers; these contributions are mentioned in Section \ref{sec:lit-gpu}.
 
 \subsection{Sequential Algorithms} \label{sec:lit-seq}
-VF \cite{VF} reduced the memory requirements of \cite{ullman_sgm} by using a State Space Representation (SSR) and developed a deterministic matching method for simultaneously verifying isomorphism.
+Vento and Fogia (VF) \cite{VF} reduced the memory requirements of \cite{ullman_sgm} by using a State Space Representation (SSR) and developed a deterministic matching method for simultaneously verifying isomorphism.
 VF2 \cite{VF2} introduced five feasibility rules for early pruning of the search tree to shrink the search space.
-VF3 \cite{VF3} developed multiple additional heuristics for early pruning and further reduced the search space, these heuristics were developed based on extensive computational experimentation.
+VF3 \cite{VF3} developed multiple additional heuristics for early pruning and further reduced the search space. These heuristics were developed with the help of extensive computational experimentation.
 Grochow \etal \cite{symbreak} assigned partial ordering to vertices matched with symmetrical query vertex to reduce redundant work.
-$\text{Turbo}_{\text{iso}}$ \cite{Turbo-iso} improved match ordering by dynamically computing a match order for each candidate, this made the search tree leaner and provided performance improvement.
+$\text{Turbo}_{\text{iso}}$ \cite{Turbo-iso} improved match ordering by dynamically computing a match order for each candidate that made the search tree leaner and provided performance improvement.
 $\text{Boost}_{\text{iso}}$ \cite{Boost-iso} in a novel contribution utilized vertex relationships to efficiently arrange candidate vertices to reuse adjacency list intersections.
 
-These sequential algorithms offer great insights in the search tree exploration phase.
-Since, the problem has so much independent work, a sequential processor tends to be slower due to repetition of tasks.
+These sequential algorithms offer great insights into the search tree exploration phase.
+Since the problem has so much independent work, a sequential processor tends to be slower due to repetition of tasks.
 Hence, sequential implementations are only practical for data graphs with up to 100,000 vertices.
 Many techniques used by parallel algorithms for shrinking search space arise from sequential algorithms.
 
 \subsection{Multi-core Algorithms} \label{sec:lit-par}
-\textit{Parallel Subgraph Listing} \cite{psgl} was the first truly parallel search space traversal based algorithm on a multi core hardware. It introduced a subgraph listing framework which statically divided work across multiple threads.
-Various load balance strategies were developed to improve its performance, it was proved that the problem of partial subgraph distribution for workload balance is strongly NP-Hard.
-\textit{CECI} \cite{CECI} proposed a novel framework for Subgraph Listing based on Compact Embedding Cluster Index, this divides the data graph into multiple embedding clusters for parallel processing.
-Even though after orders of speedups and scalability, the technique uses BFS and needs huge amount of memory for storing intermediate results.
-\textit{LIGHT} \cite{LIGHT} eliminated the memory requirements of most parallel algorithms by developing a multi-threaded DFS framework.
-\textit{Dryadic} \cite{Dryadic} Is the current state-of-the-art CPU subgraph enumerator, it uses a robust computation tree structure which optimizes by mapping to different backend hardware to perform custom compiled graph pattern matching.
+Parallel Subgraph Listing \cite{psgl} was the first truly parallel search space traversal based algorithm on multi core hardware. It introduced a subgraph listing framework that statically divided work across multiple threads.
+Various load balancing strategies were developed to improve its performance. It was also proved that the problem of partial subgraph distribution for workload balance is strongly NP-Hard.
+CECI \cite{CECI} proposed a novel framework for Subgraph Listing based on Compact Embedding Cluster Index, which divides the data graph into multiple embedding clusters for parallel processing.
+Despite orders of speedups and scalability, the technique uses BFS and needs huge amount of memory for storing intermediate results.
+LIGHT \cite{LIGHT} eliminated the memory requirements of previous BFS parallel algorithms by developing a multi-threaded DFS framework.
+Dryadic \cite{Dryadic} is the current state-of-the-art CPU subgraph enumerator that uses a robust computation tree structure which optimizes queries by mapping them to different backend hardware to perform custom compiled graph pattern matching.
 
-To summarize, \textit{Multi-core} algorithms easily outperform the sequential algorithms but are limited by the parallelism offered by CPUs.
+To summarize, multi-core algorithms easily outperform  sequential algorithms but are limited by the parallelism offered by CPUs.
 Memory bandwidth across different nodes makes it further difficult to scale.
-BFS based strategies are prevalent in the parallel computing community which impose huge hardware requirements due to significant memory usage.
+BFS-based strategies are prevalent in the parallel computing community, which impose huge hardware requirements due to significant memory usage.
 
 \subsection{GPU algorithms} \label{sec:lit-gpu}
-Due to advancements in graph algorithms on GPUs like max-flow, shortest paths and spanning trees many state space traversal based subgraph enumeration algorithms were developed.
-To the best of our knowledge, \textit{GPSM} \cite{GPSM} is the first subgraph enumeration implementation on GPU.
-It used advances in BFS on GPUs to use on the basic search tree traversal algorithm. GPSM clearly outperformed the most advanced multi-core algorithm by an order of magnitude.
-\textit{RPS} \cite{RPS-paper} focused on reducing the number of set intersection operations as that is the most expensive computational step by deploying a reuse framework in BFS traversal.
-\textit{PBE} \cite{PBE-paper} developed a scalable framework by using graph partitioning strategies and the heterogeneous computing environment to enable multiple GPUs working on each partition.
+Due to the advancements in graph algorithms on GPUs like max-flow, shortest paths, and spanning trees, many state space traversal based subgraph enumeration algorithms were developed.
+To the best of our knowledge, GPSM \cite{GPSM} is the first subgraph enumeration implementation on GPU.
+It used advances in BFS on GPUs to implement the basic search tree traversal procedure.
+GPSM outperformed the most advanced multi-core algorithm of its time by an order of magnitude in speedup.
+RPS \cite{RPS-paper} focused on reducing the number of set intersection operations, since this is the most expensive computational step, by deploying a reuse framework in BFS traversal.
+PBE \cite{PBE-paper} developed a scalable framework by using graph partitioning strategies to enable multiple GPUs to work on each partition.
 
-Since, all BFS based approaches explode in memory requirements, \textit{PARSEC} \cite{PARSEC_VD} developed the first DFS based subgraph enumeration on GPU.
-It reduced the search space by limiting compatibility to queries with at least one fully connected node (\textit{Central node}).
+Since all BFS-based approaches explode in memory requirements, PARSEC \cite{PARSEC_VD} developed the first DFS-based subgraph enumeration on GPUs.
+It reduced the search space by limiting compatibility to queries with at least one fully connected node (\textit{central node}).
 
-PARSEC \cite{PARSEC_VD} is used as a baseline for our computational experiments. It clearly showed that DFS based techniques are superior to the traditional BFS approaches on GPUs.
-However, it does redundant work due to unavailability of intermediate candidates and multiple processing units working on the same subtree.
-The parallelism schemes used by PARSEC have load imbalance that hampers its performance.
-We utilize the DFS framework developed by PARSEC and use different techniques from the traditional sequential and modern parallel algorithms to further improve performance.
+PARSEC \cite{PARSEC_VD} is selected as a baseline for our computational experiments. It clearly showed that DFS-based techniques are superior to the traditional BFS approaches on GPUs.
+However, it performs redundant work due to the unavailability of intermediate candidates and multiple processing units working on the same subtree.
+The parallelism schemes used by PARSEC also have severe load imbalance that hampers its performance.
+We utilize the DFS framework developed by PARSEC along with different techniques from the traditional sequential and modern parallel algorithms to further improve its performance.

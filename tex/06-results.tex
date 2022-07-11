@@ -1,17 +1,18 @@
-\chapter{Results}{\label{chap:Results}
+\chapter{Results}
+\label{chap:Results}
 
 \section{Experimental Setup} \label{sec:expt-info}
 All results presented in this chapter are generated on a supercomputing hardware cluster with a dual-socket 64-core AMD EPYC 7763 (``Milan") CPU and NVIDIA A100 40GB HBM2 GPU.
 The system has 256 GB of DDR4 memory with 1.5 TB swap memory via high-performance-SSD.
 The program is compiled with NVCC (CUDA 11.7, driver version 515.48) SM version 80, and GCC 11.2 with the -O3 flag.
-
 For a fair comparison, the baseline is also run on the same hardware platform with equivalent compilation flags.
 
-The data graphs used for experiments are taken from the Stanford Network Analysis Project (SNAP) \cite{snap}.
+The data graphs used for experiments are obtained from the Stanford Network Analysis Project (SNAP) \cite{snap}.
 Table \ref{tab:graphs} summarizes the properties of these data graphs.
 
 \begin{table}[tbp]
     \centering
+    \caption{Data Graphs used for experiments}
     % \resizebox{\textwidth}{!}{%
     \begin{tabular}{@{}crrr@{}}
         \hline
@@ -27,35 +28,66 @@ Table \ref{tab:graphs} summarizes the properties of these data graphs.
         \hline
     \end{tabular}%
     % }
-    \caption{Data Graphs used for experiments}
     \label{tab:graphs}
 \end{table}
 
 We use the common query graphs with central nodes that are generally used in subgraph enumeration literature.
-Figure \ref{fig:queries} shows the query graphs used for the experiments, these queries are adapted from \cite{PARSEC_VD}.
-As a notation in Figures and Tables, we use cqx for \textit{clique} of size x and cqxm1 for size x \textit{clique} - 1.
+Figure \ref{fig:queries} shows the query graphs used for experiments, these queries are adapted from \cite{PARSEC_VD}.
 \textit{Clique} is a fully connected graph.
-\begin{figure}
+As a notation in Figures and Tables, we use cqx for \textit{clique} of size x and cqxm1 for size x \textit{clique} with one edge missing. Note, removing exactly one edge from a \textit{clique} gives a unique query due to symmetry.
+\begin{figure}[t]
     \includegraphics[width=\textwidth]{fig/improvements/Templates.png}
+    \source{PARSEC \cite{PARSEC_VD}}
     \caption{Query Graphs used for experiments}
     \label{fig:queries}
 \end{figure}
 
-\section{Baseline Selection}
-As mentioned, PARSEC \cite{PARSEC_VD} is used as a baseline since it is the current state-of-the-art solver in sequential, multi-core and GPU communities.
-
 \section{Performance Criteria}
 The performance is evaluated in terms of total processing time which includes query preprocessing, data graph preprocessing, and search tree traversal times.
-We use following rules for reporting run times:\
+We use the following rules for reporting run times:\
 \begin{enumerate}
     \item For instances with total run times less than 1 second, the program is executed 5 times and average times are reported.
     \item Time taken for compilation, reading data graphs, and printing all enumerations is not considered for baseline and our implementation.
-    \item The baseline presents 2 parallelization schemes with different performances and mentions that the edge per block scheme works better than node per block for templates of size greater than five. This observation is used for fixing one parallelization scheme for comparison.
+    \item The baseline presents 2 parallelization schemes with the comment that the edge per block scheme works better than node per block for templates of size greater than five. This observation is used for fixing one parallelization scheme for comparison.
     \item Instances that take more than 12,000 seconds ($\sim 3.3$ hours) are terminated, and their times are not reported. The corresponding speedup values are reported as blank in all tables.
 \end{enumerate}
 
 
 \section{Final Results and Analysis}
+
+
+
+\begin{table}
+    \centering
+    \caption{Speedups across all queries and data graphs}
+    \resizebox{\textwidth}{!}{%
+        \begin{tabular}{c|ccccc|c}
+            \textbf{Queries}  & \textbf{soc-pokec} & \textbf{com-youtube} & \textbf{cit-patents} & \textbf{com-orkut} & \textbf{as-skitter} & \textbf{Geo Mean} \\
+            \hline
+            Tri               & 1.49               & 2.11                 & 1.00                 & 0.73               & 1.95                & 1.35              \\
+            Diamond           & 1.44               & 2.31                 & 1.00                 & 0.92               & 2.08                & 1.45              \\
+            cq4               & 1.47               & 2.51                 & 1.03                 & 0.76               & 1.85                & 1.40              \\
+            cq5m1             & 1.41               & 2.62                 & 1.08                 & 1.23               & 1.76                & 1.54              \\
+            cq5               & 1.46               & 3.04                 & 1.07                 & 1.13               & 1.83                & 1.58              \\
+            house             & 1.41               & 2.27                 & 1.08                 & 1.36               & 3.45                & 1.75              \\
+            pyramid           & 1.50               & 14.65                & 1.15                 & 4.5                & 9.75                & 4.06              \\
+            fan3              & 1.50               & 9.38                 & 1.26                 & 3.59               & 5.89                & 3.27              \\
+            cq6m1             & 4.19               & 3.09                 & 5.47                 & 2.41               & 1.44                & 3.01              \\
+            fan4              & 3.41               & 5.82                 & 2.62                 & --                 & --                  & 3.73              \\
+            wheel5            & 3.39               & 5.93                 & 2.10                 & --                 & --                  & 3.48              \\
+            cq6               & 5.68               & 3.65                 & 5.76                 & 4.48               & 2.01                & 4.04              \\
+            cq7m1             & 3.19               & 3.14                 & 5.11                 & 1.47               & 1.11                & 2.42              \\
+            cq7               & 4.43               & 3.96                 & 5.45                 & 2.01               & 1.32                & 3.03              \\
+            cq8m1             & 2.32               & 2.88                 & 3.25                 & 1.32               & --                  & 2.31              \\
+            cq8               & 3.55               & 4.06                 & 5.15                 & 1.58               & --                  & 3.29              \\
+            cq9m1             & 1.44               & 2.93                 & 2.65                 & 1.32               & --                  & 1.96              \\
+            cq9               & 2.32               & 4.06                 & 3.67                 & 1.52               & --                  & 2.69              \\
+            \hline
+            \textbf{Geo Mean} & 2.25               & 3.74                 & 2.20                 & 1.61               & 2.29                & 2.33
+        \end{tabular}%
+    }
+    \label{tab:speedups}
+\end{table}
 
 \begin{figure}
     \centering
@@ -109,47 +141,15 @@ We use following rules for reporting run times:\
 % \end{table}
 
 
-\begin{table}[]
-    \centering
-    \resizebox{\textwidth}{!}{%
-        \begin{tabular}{c|ccccc|c}
-            \textbf{Queries}  & \textbf{soc-pokec} & \textbf{com-youtube} & \textbf{cit-patents} & \textbf{com-orkut} & \textbf{as-skitter} & \textbf{Geo Mean} \\
-            \hline
-            Tri               & 1.49               & 2.11                 & 1.00                 & 0.73               & 1.95                & 1.35              \\
-            Diamond           & 1.44               & 2.31                 & 1.00                 & 0.92               & 2.08                & 1.45              \\
-            cq4               & 1.47               & 2.51                 & 1.03                 & 0.76               & 1.85                & 1.40              \\
-            cq5m1             & 1.41               & 2.62                 & 1.08                 & 1.23               & 1.76                & 1.54              \\
-            cq5               & 1.46               & 3.04                 & 1.07                 & 1.13               & 1.83                & 1.58              \\
-            house             & 1.41               & 2.27                 & 1.08                 & 1.36               & 3.45                & 1.75              \\
-            pyramid           & 1.50               & 14.65                & 1.15                 & 4.5                & 9.75                & 4.06              \\
-            fan3              & 1.50               & 9.38                 & 1.26                 & 3.59               & 5.89                & 3.27              \\
-            cq6m1             & 4.19               & 3.09                 & 5.47                 & 2.41               & 1.44                & 3.01              \\
-            fan4              & 3.41               & 5.82                 & 2.62                 & --                 & --                  & 3.73              \\
-            wheel5            & 3.39               & 5.93                 & 2.10                 & --                 & --                  & 3.48              \\
-            cq6               & 5.68               & 3.65                 & 5.76                 & 4.48               & 2.01                & 4.04              \\
-            cq7m1             & 3.19               & 3.14                 & 5.11                 & 1.47               & 1.11                & 2.42              \\
-            cq7               & 4.43               & 3.96                 & 5.45                 & 2.01               & 1.32                & 3.03              \\
-            cq8m1             & 2.32               & 2.88                 & 3.25                 & 1.32               & --                  & 2.31              \\
-            cq8               & 3.55               & 4.06                 & 5.15                 & 1.58               & --                  & 3.29              \\
-            cq9m1             & 1.44               & 2.93                 & 2.65                 & 1.32               & --                  & 1.96              \\
-            cq9               & 2.32               & 4.06                 & 3.67                 & 1.52               & --                  & 2.69              \\
-            \hline
-            \textbf{Geo Mean} & 2.25               & 3.74                 & 2.20                 & 1.61               & 2.29                & 2.33
-        \end{tabular}%
-    }
-    \caption{Speedups across all queries and data graphs}
-    \label{tab:speedups}
-\end{table}
 
-
-Figure \ref{fig:gpu_comp} gives a comparison in runtimes across all graphs and queries on a logarithmic scale.
+Figure \ref{fig:gpu_comp} gives a runtime comparison across all graphs and queries on a logarithmic scale.
 Table \ref{tab:speedups} gives individual speedups and geometric mean speedups across different templates and data graphs.
 The highest speedup among all observations is $14.65\times$, while the lowest speedup is $0.73\times$.
 The geometric mean speedups across different queries are separately plotted in Figure \ref{fig:query-speedups}.
 Roughly, the speedups increase with increasing query size for queries in similar families.
-Queries in the family pyramids, fans, and wheels have higher speedups as compared to others.
+Queries in the family \textit{fans}, and \textit{wheels} have higher speedups as compared to others.
 This observation can be explained by Figure \ref{fig:load-balance-baseline} since \textit{fans} and \textit{wheels} has higher load imbalance than other queries.
-Data graphs cit-patents and com-orkut perform worse than the baseline because the inducing subgraph kernel has high load imbalance.
+Data graphs cit-patents and com-orkut perform worse than the baseline for small queries because the kernel that induces subgraph has high load imbalance.
 Since the processing time for these queries is fairly small, load imbalance in the subgraph induction step is significant.
 
 \begin{figure}

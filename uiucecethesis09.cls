@@ -67,7 +67,7 @@
 \newif\if@mixc@sech@p \@mixc@sech@pfalse
 \newif\if@littlecaptions\@littlecaptionsfalse  %% 3.10
 \newdimen\thesis@parindent
-\DeclareOption{draftthesis}{\@thesisdrafttrue}
+% \DeclareOption{draftthesis}{\@thesisdrafttrue}
 \DeclareOption{fancy}{\@thesisfancytrue}
 %%%%\DeclareOption{fullpage}{\@fullpagetrue}
 \DeclareOption{fullpage}{\@fullpagetrue\@fullpagesinglefalse} %% 3.09

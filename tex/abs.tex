@@ -1,14 +1,16 @@
 Subgraph enumeration is an important problem in graph theory with wide range of applications.
-Being NP-complete, this problem needs efficient implementations and smart heuristics to be practical for large sized instances.
-This problem has huge scope for parallelism, there are many existing solutions in the multi-core and distributed computing community.
-Graphics Processing Units (GPUs) offer massive parallelism and GPU based solutions outperform the multi-core implementations.
+With rapidly increasing graph sizes due to advent of internet and smartphones, subgraph enumeration needs high performing implementations.
+Being NP-complete, this problem poses significant scalability challenges and needs efficient implementations for practical solutions.
+Fortunately, this problem is highly amenable to parallelization.
+There are already many solutions in the multi-core and distributed computing community.
+GPU (Graphics Processing Unit)-based solutions are recently gaining recognition as they offer massive parallelism without network delays.
 
 Most GPU solutions use Breadth First Traversal to utilize underlying parallelism and impose expensive restrictions on hardware due to huge memory requirements.
-PARSEC (Parallel Subgraph Enumeration and Counter) \cite{PARSEC_VD} is the first GPU based solution that uses depth first search and performs in-memory subgraph enumeration.
-In this thesis, PARSEC is improved with insights from traditional sequential solutions and smart GPU implementations.
+PARSEC (Parallel Subgraph Enumeration and Counter) \cite{PARSEC_VD} is the first GPU-based solution that uses Depth First Search and performs in-memory subgraph enumeration.
+In this thesis, PARSEC is improved by leveraging insights from traditional sequential solutions and advanced parallel programming techniques.
 
-The performance of subgraph Enumeration is limited by number of intersection operations. To tackle this, a smart preprocessing technique was developed that detects scope for intersection reuse to reduce the number of intersections by up to $3.87\times$.
-A 2 phase pruning technique was developed which shrinks search space to further reduce the number of intersections by up to $6.6\times$.
-An in depth analysis of PARSEC was conducted to discover severe load imbalance which limits performance, a hybrid parallelization scheme was developed that improves the load balance by up to $14\times$.
-Altogether, these improvements provide a geometric mean time speedup up to $4.6\times$ across data graphs and up to $3.7\times$ across all queries.
-\samiran{Is this overselling?}
+The performance of Subgraph Enumeration is limited by the number of adjacency list intersection operations.
+To tackle this, a smart preprocessing technique was developed for detecting opportunities for intersection reuse, which, in turn, reduces the number of intersections by up to $3.87\times$.
+A two-phase pruning technique was developed which shrinks the search space to further reduce the number of intersections by up to $6.6\times$.
+An in-depth analysis of PARSEC was conducted to overcome its load imbalance and limited hardware utilization. A hybrid parallelization scheme was developed that improves the load balance by up to $14\times$.
+Altogether, these improvements provide a geometric mean time speedup up to $4.6\times$ across data graphs and up to $3.7\times$ across all queries with max speedups up to $14.6\times$.
