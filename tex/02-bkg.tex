@@ -9,25 +9,28 @@ These microprocessors were capable of performing in the range of Giga-FLOPS $(10
 This improvement drive flattened due to fundamental problems such as thermal stability, energy density, and quantum effects.
 Since then, all microprocessors have adapted architecture with multiple processing cores and thread virtualization to keep up with the improvements expected by the market. Naturally, it needed significant change in software to keep up with the reported performance and increasing computational requirements \cite{Sutter-multi-core-programming}.
 
-High-Definition graphics demand from the gaming industry was one of the biggest drivers for such high-performance hardware. The performance demanded here is throughput oriented, i.e., generating maximum frames per second while the computational requirement for each pixel is sufficiently low.
-Some chip manufacturers like NVIDIA took a different approach of multi-thread hardware  to cater to these requirements \cite{GPUs_and_gaming}.
-The hardware designed with this philosophy had threads capable of performing simple computational tasks with relatively lower clock speed to give an overall performance in Tera-FLOPS range. On top of that, the hardware gave more performance per watt which made it possible to add to a desktop machine \cite{ppw_gpu_vs_cpu}.
+High-Definition graphics demand from the gaming industry was one of the biggest drivers for such high-performance hardware.
+The performance demanded here is throughput oriented, i.e., generating maximum frames per second while the computational requirement for each pixel is sufficiently low.
+Some chip manufacturers like NVIDIA took a different approach of single-instruction-multiple-thread (SIMT) hardware to cater to these requirements \cite{GPUs_and_gaming}.
+The hardware designed with this philosophy had threads capable of performing simple computational tasks with relatively lower clock speed to give an overall performance in Tera-FLOPS range.
+On top of that, the hardware gave more performance per watt which made it possible to add to a desktop machine \cite{ppw_gpu_vs_cpu}.
 Modern GPUs have also proven to be fast and cost-effective for deep learning and image processing tasks contributing to many advances in fields like computer vision and artificial intelligence. A modern data center GPU, for example (NVIDIA A100), now has more than 100,000 concurrent threads. These threads execute in many simple pipelines to give around 10 times faster raw performance than state-of-the-art CPUs \cite{GPU_book_wen-mei}.
 \begin{figure}
+    \centering
     \includegraphics[width=\textwidth]{fig/Nvidia-revenue-by-end-market.png}
     \source{Business Quant \cite{business-quant}}
-    \caption{Nvidia Revenue by End Market}
+    \caption{NVIDIA Revenue by End Market}
     \label{fig:Nvidia-revenue}
 \end{figure}
 
 Figure \ref{fig:Nvidia-revenue} shows that NVIDIA GPU data center market has improved significantly in recent years to become almost equivalent to the already huge gaming industry.
 This has fueled the hardware and software development of current server-grade GPUs which has enabled huge computational potential for deep learning.
-While HPC hardware improves at such rapid pace, software solutions for graph theory problems still need to move from the \textit{multi core} paradigm to \textit{multi thread}.
+While HPC hardware improves at such rapid pace, software solutions for graph theory problems still need to move from the \textit{multi-core} CPU paradigm to massively parallel GPU paradigm.
 
 \subsection{Heterogeneous Programming Environment}
 \begin{figure}[ht]
-    \begin{minipage}{0.35\textwidth}
-        \includegraphics[width=\textwidth]{fig/cpu-gpu-arch.jpg}
+    \begin{minipage}{0.28\textwidth}
+        \includegraphics[width=\textwidth]{fig/cpu-gpu-architecture-HD.png}
     \end{minipage}
     \begin{minipage}{0.6\textwidth}
         \includegraphics[width=\textwidth]{fig/heterogeneous-programming.png}
@@ -37,7 +40,7 @@ While HPC hardware improves at such rapid pace, software solutions for graph the
 \end{figure}
 GPU is a throughput oriented computational hardware.
 A single thread of a GPU is significantly slower than a CPU. Hence, working with it for inherently sequential tasks can incur huge latencies.
-Since many basic programming tasks are inherently sequential and the whole operating system environment is developed for latency optimized processors (CPUs), GPUs work better off being used as a supplemental piece of hardware along with CPUs for computationally intensive tasks.
+Since many basic programming tasks are inherently sequential and the whole operating system environment is developed for latency optimized processors (CPUs), GPUs work better as hardware accelerator along with CPUs for computationally intensive tasks.
 Hence, GPUs are mostly used in a Heterogeneous programming environment with CPU (host) executing the governing code while offloading computationally intensive tasks as kernels to GPUs (device).
 Note that one host can be connected to multiple devices.
 Since the memory of the device and host are different, input and output data need to be copied before and after kernel execution.
@@ -45,18 +48,18 @@ Figure \ref{fig:Heterogenous-Programming} shows the high level hardware and soft
 GPUs can communicate with CPU via PCIe (Peripheral Component Interconnect express) bus and with each other via NVLink \texttrademark.
 The memory bandwidth of PCIe is the lowest and hence it is in best interests to avoid high data transfers between GPU and CPU.
 Native memory of the GPU or the VRAM, is High Bandwidth Memory (HBM) with the latest generation having bandwidth of around 2000 GB/sec.
-The Nvidia proprietary GPU Interconnect with 12 links per GPU can provide up to 600 GB/sec.
+The NVIDIA proprietary GPU Interconnect with 12 links per GPU can provide up to 600 GB/sec.
 While the industry standard PCIe bus gen 5.0 with 32 links can provide up to 128 GB/sec of bandwidth.
 
 \subsection{Thread Hierarchy}\label{sec:thread-hierarchy}
-As discussed in Section \ref{sec:History} GPUs have \textit{multi thread} architecture with hundreds of thousands of threads.
+As discussed in Section \ref{sec:History} GPUs have \textit{SIMT} architecture with hundreds of thousands of concurrent threads.
 To have such massive hardware parallelism threads have to collaborate on usage of different resources for example, \textit{cuda cores}.
 Since all threads do not share these resources, it is important to understand the thread Hierarchy in GPUs.
 
 \begin{figure}[h]
-\centering
-    \includegraphics[width=0.9\textwidth]{fig/thread-hierarchy.png}
-    \source{Nvidia Developer Blog \cite{developer-blog}}
+    \centering
+    \includegraphics[width=\textwidth]{fig/thread-hierarchy.png}
+    \source{NVIDIA Developer Blog \cite{developer-blog}}
     \caption{GPU Thread Hierarchy}
     \label{fig:Thread-Hierarchy}
 \end{figure}
@@ -72,7 +75,7 @@ Hence, multiple threads in a block can utilize the same core.
 Multiple blocks can reside on an SM simultaneously within limits.
 GPU has multiple SMs and hence many blocks can concurrently reside on the GPU during a context.
 If a grid requests more blocks than that can concurrently reside on the GPU, their execution is serialized.
-Nvidia's latest server-grade GPU A100 has 108 SMs with a maximum of 32 blocks or 2048 threads residing per SM which means the maximum number of concurrent threads is  221,184.
+The latest server-grade GPU from NVIDIA (A100) has 108 SMs with a maximum of 32 blocks or 2048 threads residing per SM which means the maximum number of concurrent threads is  221,184.
 While on the hardware side, A100 has 6912 \textit{cuda cores}, i.e., 64 cores per SM.
 % So, during execution, all 2048 threads in a block will compete for these 64 cores.
 
@@ -80,7 +83,7 @@ To add further, the thread instructions are processed in a Single Instruction Mu
 
 \begin{figure}[h]
     \includegraphics[width=\textwidth]{fig/memory-hierarchy.png}
-    \source{Nvidia Developer Blog \cite{developer-blog}}
+    \source{NVIDIA Developer Blog \cite{developer-blog}}
     \caption{GPU Memory Hierarchy}
     \label{fig:Memory-Hierarchy}
 \end{figure}
@@ -91,9 +94,11 @@ If the available memory bandwidth is overwhelmed, threads need to wait for data 
 Even though GPU memory is significantly faster than conventional RAM, it can still limit application performance.
 This problem is alleviated by building memory caches on the chip die itself, so accessing them is significantly faster (around 100 - 1000 times) but they have size restrictions.
 Modern compilers identify repeated memory accesses and can aggressively cache to reduce memory stress.
-The memory bandwidth problem is not significant for CPUs as they have huge cache banks per thread core. But for GPUs, the cache per thread (L1 cache) is very restrictive.
+The memory bandwidth problem is not as severe for CPUs as they have huge cache banks per thread core. But for GPUs, the cache per thread (L1 cache) is much smaller.
+For example, in the A100 GPU, up to 221,184 threads share an L2 cache of 40 MB, which is only 1.8 KB per thread.
 
-GPU memory architects have attempted to solve this problem by adding hierarchical memory banks. There are three types of memory banks on a GPU, namely \textit{Global}, \textit{Shared}, and \textit{Register} memory.
+GPU memory architects have attempted to solve this problem by adding hierarchical memory types.
+There are three memory types in a GPU system, namely \textit{Global}, \textit{Shared}, and \textit{Register} memory.
 Figure \ref{fig:Memory-Hierarchy} shows the memory hierarchy. As the name suggests global memory is accessible by all threads, it is equivalent to the Random Access Memory (RAM) on CPUs and is also sometimes referred as Video RAM (VRAM) or Device RAM (DRAM).
 Shared memory is accessible by all threads in a thread block.
 Register memory is private to each thread.
@@ -101,19 +106,21 @@ The size restrictions of these memory banks are based on SM architecture and har
 Programmers are also equipped with read-only constant memory (not shown in Figure \ref{fig:Memory-Hierarchy}) which is accessible by all threads.
 Unknown to the programmer, compilers can also utilize these memory banks by caching in register and shared memory banks if repeated accesses to global memory are detected. It is referred as L1 cache. Equivalent to CPU cache there is also an L2 cache for use by the compiler only and accessible to all threads.
 
-As discussed, memory utilization plays a significant role in code performance; a program whose execution time is restricted by memory is called memory bound. Memory bound programs do not scale well with increasing number of devices as distributing computation to other workers does no benefit and further increases latency due to communication.
-Some common techniques to reduce memory pressure are designing algorithms capable of using shared and register memory, consecutive threads accessing nearby memory, and reducing contention for atomic operations on global memory.
+As discussed, memory utilization plays a significant role in code performance; a program whose execution time is restricted by memory is called memory-bound. Memory-bound programs do not scale well with increasing number of devices as distributing computation to other workers provides no benefit and further increases latency due to communication.
+Some common techniques to reduce memory pressure are designing algorithms capable of using shared and register memory, consecutive threads accessing nearby memory, and reducing contention and/or latency for atomic operations on global memory \cite{GPU_book_wen-mei}.
 
 
 
 \subsection{Block Scheduling}\label{sec:block-scheduling}
 As discussed in Section \ref{sec:thread-hierarchy} multiple blocks can concurrently reside on a GPU.
 Generally, kernels are launched with grid sizes much higher to concurrently reside on a GPU so, the block execution needs to be scheduled.
-The block scheduler assigns hardware resources to maximum number of blocks that can occupy the GPU. The remaining blocks wait in a queue and are scheduled once a previously active block terminates.
+The block scheduler assigns hardware resources to maximum number of blocks that can occupy the GPU. The remaining blocks wait in a queue and are scheduled once a previously active block retires.
 This is done as block execution is non-preemptive. That is, once allocated resources, the block is never unallocated till completion.
-This scheduling provides scope for clever memory utilization as memory need not be allocated to the whole grid but only to the blocks that concurrently execute instructions. This concept of memory management is called persistent memory and it is often used to reduce memory requirements.
+This scheduling provides scope for clever memory utilization as memory need not be allocated to the whole grid but only to the blocks that concurrently execute instructions.
+This concept of memory management is called persistent memory allocation and it is often used to reduce memory requirements \cite{persistent-memory}.
 
-It is important to design the parallelism in such a way that all blocks have nearly similar amount of work.
+It is important to design the parallelism in such a way that all blocks have %nearly
+similar amount of work.
 If not, blocks having longer work should be scheduled earlier to reduce makespan.
 To have better control over work allocation to a block, programmers often launch kernels with grid size equal to the number of blocks that can concurrently reside on the GPU.
 The blocks then pick from a common list of tasks in global memory; this approach is known as work stealing.
@@ -129,7 +136,7 @@ Let the underlying graph be $G=(V,E)$ and its adjacency matrix representation be
 Then $A = |V|\times|V|$ is defined as:
 $$
     A_{i,j}=\begin{cases}
-        1 & (i,j) \in E, \text{and}     \\
+        1 & (i,j) \in E, \text{and} \\
         0 & \text{otherwise.}
     \end{cases}
 $$

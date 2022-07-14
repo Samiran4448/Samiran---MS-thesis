@@ -372,13 +372,13 @@ Note, the pseudocode in Algorithm \ref{algo:DFS-traversal} describes DFS-based t
               \caption{Step 5}
               \label{fig:sgm-step5}
           \end{figure}
-          Similarly, the other leg generates 2 more candidates for level 5.
+          Similarly, the other leg generates two more candidates for level 5.
 \end{enumerate}
 This way the search tree traversal process terminates with final matches
 $\{d_1, d_9, d_2, d_{12}, d_{10} \}, \{d_1, d_9, d_8, d_{12}, d_2\}$, and $\{d_1, d_9, d_8, d_{12}, d_{10}\}$.
 There might be other matches originating from the subtrees rooted at $\{d_8, d_9\}$ which were not illustrated here.
 
-To conclude, this chapter gives a detailed understanding of all techniques involved in subgraph enumeration. As we can see, all subtrees are independent of each other therefore they can be easily parallelized on GPUs.
+To conclude, this chapter provides a detailed understanding of all techniques involved in subgraph enumeration. As we can see, all subtrees are independent of each other therefore they can be easily parallelized on GPUs.
 
 One subtle observation to be made here is that the exploration is dependent on the symmetry breaking criteria.
 We can see from Figure \ref{fig:sgm-step4} that there would be many more candidates at level 4 if symmetry breaking was performed using lexicographic or increasing degree criterion.

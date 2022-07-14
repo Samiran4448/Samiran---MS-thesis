@@ -9,7 +9,7 @@ Most GPU solutions use Breadth First Traversal to utilize underlying parallelism
 PARSEC (Parallel Subgraph Enumeration and Counter) \cite{PARSEC_VD} is the first GPU-based solution that uses Depth First Search and performs in-memory subgraph enumeration.
 In this thesis, PARSEC is improved by leveraging insights from traditional sequential solutions and advanced parallel programming techniques.
 
-The performance of Subgraph Enumeration is limited by the number of adjacency list intersection operations.
+The performance of Subgraph Enumeration is limited by the computational cost of adjacency list intersection operations.
 To tackle this, a smart preprocessing technique was developed for detecting opportunities for intersection reuse, which, in turn, reduces the number of intersections by up to $3.87\times$.
 A two-phase pruning technique was developed which shrinks the search space to further reduce the number of intersections by up to $6.6\times$.
 An in-depth analysis of PARSEC was conducted to overcome its load imbalance and limited hardware utilization. A hybrid parallelization scheme was developed that improves the load balance by up to $14\times$.

@@ -47,8 +47,8 @@ The performance is evaluated in terms of total processing time which includes qu
 We use the following rules for reporting run times:\
 \begin{enumerate}
     \item For instances with total run times less than 1 second, the program is executed 5 times and average times are reported.
-    \item Time taken for compilation, reading data graphs, and printing all enumerations is not considered for baseline and our implementation.
-    \item The baseline presents 2 parallelization schemes with the comment that the edge per block scheme works better than node per block for templates of size greater than five. This observation is used for fixing one parallelization scheme for comparison.
+    \item Time taken for compilation, reading data graphs, and printing all enumerations is not considered for the baseline and our implementation.
+    \item The baseline presents two parallelization schemes with the comment that the edge per block scheme works better than node per block for templates of size greater than five. This observation is used for fixing one parallelization scheme for comparison.
     \item Instances that take more than 12,000 seconds ($\sim 3.3$ hours) are terminated, and their times are not reported. The corresponding speedup values are reported as blank in all tables.
 \end{enumerate}
 
@@ -57,7 +57,7 @@ We use the following rules for reporting run times:\
 
 
 
-\begin{table}
+\begin{table}[h]
     \centering
     \caption{Speedups across all queries and data graphs}
     \resizebox{\textwidth}{!}{%
@@ -142,13 +142,13 @@ We use the following rules for reporting run times:\
 
 
 
-Figure \ref{fig:gpu_comp} gives a runtime comparison across all graphs and queries on a logarithmic scale.
-Table \ref{tab:speedups} gives individual speedups and geometric mean speedups across different templates and data graphs.
+Figure \ref{fig:gpu_comp} presents a runtime comparison across all graphs and queries on a logarithmic scale.
+Table \ref{tab:speedups} provides individual speedups and geometric mean speedups across different templates and data graphs.
 The highest speedup among all observations is $14.65\times$, while the lowest speedup is $0.73\times$.
 The geometric mean speedups across different queries are separately plotted in Figure \ref{fig:query-speedups}.
 Roughly, the speedups increase with increasing query size for queries in similar families.
 Queries in the family \textit{fans}, and \textit{wheels} have higher speedups as compared to others.
-This observation can be explained by Figure \ref{fig:load-balance-baseline} since \textit{fans} and \textit{wheels} has higher load imbalance than other queries.
+This observation can be explained by Figure \ref{fig:load-balance-baseline} since \textit{fans} and \textit{wheels} have higher load imbalance than other queries.
 Data graphs cit-patents and com-orkut perform worse than the baseline for small queries because the kernel that induces subgraph has high load imbalance.
 Since the processing time for these queries is fairly small, load imbalance in the subgraph induction step is significant.
 

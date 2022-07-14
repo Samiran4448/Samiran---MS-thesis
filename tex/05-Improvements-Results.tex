@@ -4,7 +4,7 @@ Multiple ideas were explored to improve the performance of PARSEC \cite{PARSEC_V
 This chapter describes each idea and its individual impact on overall performance.
 All improvements are then combined to present the final results in Chapter \ref{chap:Results}.
 
-The criteria used for quantifying the contributions of these improvements are number of intersections and total running time. These numbers are reported as speedups. Formally, we define the intersection speedup and time speedup as:
+The criteria used for quantifying the contributions of these improvements are the number of intersections performed and the total running time. These measures are reported as speedups. Formally, we define the intersection speedup and time speedup as:
 $$
     \text{Intersection Speedup} = \frac{\text{\# of Intersections Baseline}}{\text{\# of Intersections New}}
 $$
@@ -16,7 +16,7 @@ The information of data graphs and queries used to report individual performance
 \section{Intersection Reuse}\label{sec:reuse-impl}
 Adjacency list intersection operation for generating next candidates (Algorithm \ref{algo:intersect}) is the most time-consuming operation in subgraph enumeration.
 This is a well-established fact in the literature \cite{RPS-paper}, \cite{LIGHT}, \cite{VF3} and it was also verified for the baseline \cite{PARSEC_VD}.
-Figure \ref{fig:time-dist} gives the distribution of time spent by each operation in different tasks.
+Figure \ref{fig:time-dist} presents the distribution of time spent by each operation in different tasks.
 The Intersect operation shown here is the time taken by Algorithm \ref{algo:intersect}.
 \begin{figure}
     \includegraphics[width=\textwidth]{fig/improvements/time-distributions-yt.png}
@@ -24,7 +24,7 @@ The Intersect operation shown here is the time taken by Algorithm \ref{algo:inte
     \label{fig:time-dist}
 \end{figure}
 This algorithm iterates over each element in the backward neighbors list to perform adjacency list intersection and generates possible candidates for next level (lines 2 - 5).
-The size of the backward neighbors list increases with larger templates, which results in even more adjacency list intersections at each node.
+The size of the backward neighbors list increases for larger templates, which results in even more adjacency list intersections at each node.
 
 RPS \cite{RPS-paper} reduces these operations by generating an intersection reuse plan which smartly finds the intersections that will be required by more than one node and stores them after first computation.
 % There is a lot of intersection reuse possible with RPS as they employ a BFS strategy.
@@ -49,8 +49,8 @@ With these definitions the optimization problem can be modelled as:
 \end{align}
 Where, $$
     W_{ij} = \begin{cases}
-        |\mathcal{N}(S_q[i]) \cap \mathcal{N}(S_q[j])| \qquad \text{if } i>j,~\mathcal{N}(S_q[i]) \supseteq \mathcal{N}(S_q[j])  \text{ and,}\\
-        0   \qquad \text{Otherwise.}
+        |\mathcal{N}(S_q[i]) \cap \mathcal{N}(S_q[j])| \qquad \text{if } i>j,~\mathcal{N}(S_q[i]) \supseteq \mathcal{N}(S_q[j])  \text{, and} \\
+        0   \qquad \text{otherwise.}
     \end{cases}
 $$
 The maximization problem (\ref{eq:obj} - \ref{eq:con1}) is a Linear Semi-Assignment Problem (LSAP) for which the greedy solution is optimal.
@@ -62,7 +62,7 @@ $$
         0   \qquad \text{Otherwise}
     \end{cases}
 $$
-Reuse detection involves a maximum operation for each level in $G_q$ hence it is polynomial time and can be executed on CPU for small-sized query graphs.
+Reuse detection involves a maximum operation for each level in $G_q$ hence it is polynomial time and can be executed on the CPU for small-sized query graphs.
 The mappings found ($x_{ij} = 1$) imply that level $i$ can use intersection results from level $j$.
 Hence, level $j$ is flagged as \textit{reusable} and its intersection results are stored along with the DFS stack.
 Algorithm \ref{algo:reuse} lists the reuse detection and post-processing recipe.
@@ -76,7 +76,6 @@ The backward neighbors of level 4 are $\{1,3\}$ and level 5 are $\{1,2,3\}$.
 % A reuse pointer array is created to avoid checks inside the for loop of Algorithm \ref{algo:intersect} (line 2).
 A reuse pointer array, that points to the start of the remaining neighbors of level 5 is created to avoid extra checks in Algorithm \ref{algo:intersect}.
 % To avoid checks indie the for loop of Algorithm \ref{algo:intersect} (line 2), another Reuse pointer array is created which gives the start of the remaining neighbors of level 5.
-
 \begin{figure}
     \includegraphics[width=\textwidth]{fig/improvements/Reuse-resorting.png}
     \caption{Reuse Detection Example}
@@ -85,7 +84,8 @@ A reuse pointer array, that points to the start of the remaining neighbors of le
 Once the reuse is detected and pointers are set, the data is sent to the GPU constant memory for the rest of the application. For implementing reuse, the function in Algorithm \ref{algo:intersect} needs to be changed to add conditions for checking if a level is reusable or if the reuse pointer is updated.
 These changes are shown as a flow chart in Figure \ref{fig:reuse-flowchart}.
 \begin{figure}
-    \includegraphics[width=\textwidth]{fig/improvements/reuse-flow.png}
+    \centering
+    \includegraphics[width=\textwidth]{fig/improvements/reuse-flow1.png}
     \caption{Flowchart with and without reuse}
     \label{fig:reuse-flowchart}
 \end{figure}
@@ -157,7 +157,7 @@ Since the backward neighbors lists are small for sparse queries, the benefits du
 \section{Hybrid Symmetry Breaking}\label{sec:hy-symbreak}
 Symmetry breaking is an important operation in the search tree traversal.
 \cite{ullman_sgm} gives a simple ordering technique for symmetry breaking, but the ordering criteria are not well-defined.
-Any criteria can be used for correctness, but efficient criteria can significantly improve performance due to slimmer search tree.
+Any criterion can be used for correctness, but efficient criteria can significantly improve performance due to slimmer search tree.
 Handling symmetries to reduce the search space is an active area of research.
 The problem of finding an efficient symmetry breaking criteria was shown to be strongly NP-hard by \cite{crawford-sb-np-hard}.
 A lot of symmetry breaking criteria have been defined since then.
@@ -244,7 +244,7 @@ We present the following observation to precisely find out when the criteria can
     Since, $(x,y) \in \mathcal{E}(G_{ind}(v_1)) ~ \Rightarrow ~ x,y \in \mathcal{N}(v_1)$\\
     Similarly,  $x,y \in \mathcal{N}(v_2)$
 
-    Now for Algorithm \ref{algo:DFS-traversal}, since level 2 vertex (say $q_2$) in the query graph is not symmetric to the level 1 vertex (say $q_1$), candidates for level 2 will be given by adjacency list intersections of matches in $\mathcal{N'}(q_2)$. 
+    Now for Algorithm \ref{algo:DFS-traversal}, since level 2 vertex (say $q_2$) in the query graph is not symmetric to the level 1 vertex (say $q_1$), candidates for level 2 will be given by adjacency list intersections of matches in $\mathcal{N'}(q_2)$.
 
     Since, $q_1$ has to be a central node, $\mathcal{N'}(q_2)=q_1 \Rightarrow $ level 2 candidates for tree rooted at $v_1$ will be $\mathcal{N}(v_1)$ and for tree rooted at $v_2$ they will be $\mathcal{N}(v_2).$
     Therefore, all edges in $X$ are added to both search trees.\\
@@ -369,21 +369,25 @@ The load balance is supposed to improve for the edge per block scheme as it woul
 Figure \ref{fig:load-balance-baseline} shows the load balance across SMs for various query graphs as a standard box plot.
 This is computed by finding the relative processing time spent by each SM during kernel lifetime.
 It is clear from the figure that the edge per block parallelization scheme significantly improves load balance.
-\begin{figure}
+\begin{figure}[t]
     \includegraphics[width=\textwidth]{fig/improvements/yt_lb-baseline_byedge.png}
     \caption{com-youtube load balance with different parallelization schemes}
     \label{fig:load-balance-baseline}
+
+    \includegraphics[width=\textwidth]{fig/improvements/load-balance-LD.png}
+    \caption{Load balance for nodes with degree $\leq 256$ }
+    \label{fig:load-balance-LD}
 \end{figure}
 
 \subsubsection*{Observation 3 - Load balance for low degree nodes}
 Since the trend between degree and run time is exponential, the subtrees originating from nodes with low degrees will likely have lesser variation in run times.
 Figure \ref{fig:load-balance-LD} shows there is negligible load imbalance when processing low degree nodes.
 % For these findings, all nodes with degree higher than cutoff were filtered out before kernel launch.
-\begin{figure}
-    \includegraphics[width=\textwidth]{fig/improvements/load-balance-LD.png}
-    \caption{Load balance for nodes with degree $\leq 256$ }
-    \label{fig:load-balance-LD}
-\end{figure}
+% \begin{figure}
+%     \includegraphics[width=\textwidth]{fig/improvements/load-balance-LD.png}
+%     \caption{Load balance for nodes with degree $\leq 256$ }
+%     \label{fig:load-balance-LD}
+% \end{figure}
 
 The claim from the authors of \cite{PARSEC_VD} was edge per block scheme works better than node per block for queries of size greater than five.
 One reason for this claim is implied by the load balance observations above. However, it does not explain the slow performance of the edge per block kernel.
@@ -401,7 +405,7 @@ Since splitting the kernels causes poor caching performance and launch overheads
 Nodes with degree less than cutoff would perform subgraph induction and search tree traversal in node per block fashion.
 Whereas nodes with degree higher than cutoff would perform these operations in separate kernels as mentioned above.
 Empirical testing was conducted to fix a cutoff value across different queries.
-It was found that for dense queries like \textit{cqx} and \textit{cqxm1} cutoff value between $(1024 - 2048)$ is better while for sparse queries like \textit{fans} and \textit{wheels} cutoff value around $768$ achieved best results. 
+It was found that for dense queries like \textit{cqx} and \textit{cqxm1} cutoff value between $(1024 - 2048)$ is better while for sparse queries like \textit{fans} and \textit{wheels} cutoff value around $768$ achieved best results.
 It was also observed that the run time is not too sensitive to cutoff.
 Figure \ref{fig:cutoff-tests} shows the relative run times across different cutoffs.
 Using these insights the cutoff was decided at runtime based on the input query.
@@ -414,8 +418,9 @@ Using these insights the cutoff was decided at runtime based on the input query.
 
 Figure \ref{fig:hybrid-par-speedups} shows the improvement in runtimes for the com-youtube data graph across different queries.
 
-\begin{figure}
-    \includegraphics[width=\textwidth]{fig/improvements/Hybrid-parallelism-speedups.png}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.6\textwidth]{fig/improvements/Hybrid-parallelism-speedups.png}
     \caption{Run times with Hybrid parallelism for com-youtube}
     \label{fig:hybrid-par-speedups}
 \end{figure}
